@@ -44,6 +44,7 @@ class StockInfo:
         """API 요청을 실행합니다."""
         headers = kwargs.pop("headers", {})
         headers["tr_id"] = tr_id
+        headers["content-type"] = "application/json;charset=UTF-8"
         
         if self.token_manager:
             access_token = self._get_access_token()
