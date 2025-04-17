@@ -30,6 +30,9 @@ rich = "^13.0.0"
 [tool.poetry.scripts]
 kiwoom = "kiwoom_rest_api.cli.main:app"
 
+[tool.poetry.group.dev.dependencies]
+dotenv = "^0.9.9"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
