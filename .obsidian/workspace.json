@@ -15,9 +15,9 @@
               "state": {
                 "file": "canvas/basic_stock_information_request_ka10001.canvas",
                 "viewState": {
-                  "x": 4665.374486257543,
-                  "y": -1455.1031833114012,
-                  "zoom": 1
+                  "x": 5850.104190672299,
+                  "y": -2137.511364697606,
+                  "zoom": 0.33333333333333337
                 }
               },
               "icon": "lucide-layout-dashboard",
@@ -173,17 +173,19 @@
   },
   "active": "d7dc7f16ec94432a",
   "lastOpenFiles": [
+    "images/Pasted image 20250418093332.png",
+    "images/Pasted image 20250418093317.png",
+    "images/Pasted image 20250418093227.png",
+    "images/Pasted image 20250418093158.png",
+    "images/Pasted image 20250418093116.png",
+    "images/Pasted image 20250418093032.png",
+    "images/Pasted image 20250418092921.png",
+    "images/Pasted image 20250418092758.png",
+    "images/Pasted image 20250418092729.png",
+    "images/Pasted image 20250418092703.png",
+    "uv.lock",
+    "a.env",
     "images/Pasted image 20250417103715.png",
-    "images/Pasted image 20250417103529.png",
-    "images/Pasted image 20250417103441.png",
-    "images/Pasted image 20250417103332.png",
-    "images/Pasted image 20250417103237.png",
-    "images/Pasted image 20250417103155.png",
-    "images/Pasted image 20250417103143.png",
-    "images/Pasted image 20250417103042.png",
-    "images/Pasted image 20250417102729.png",
-    "images/Pasted image 20250417102636.png",
-    "images/Pasted image 20250417102555.png",
     "images",
     "canvas/basic_stock_information_request_ka10001.canvas",
     "structure.canvas",

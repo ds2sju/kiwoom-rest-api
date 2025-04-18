@@ -20,6 +20,8 @@ def make_url(endpoint: str) -> str:
     # Ensure endpoint starts with a forward slash
     if not endpoint.startswith('/'):
         endpoint = f"/{endpoint}"
+        
+    print("\n\n##  full url  ##\n\n", urljoin(get_base_url(), endpoint))
     
     return urljoin(get_base_url(), endpoint)
 
@@ -59,30 +61,52 @@ def prepare_request_params(
     access_token: Optional[str] = None,
     timeout: Optional[float] = None,
 ) -> Dict[str, Any]:
-    """Prepare common request parameters"""
-    url = make_url(endpoint)
-    
-    request_headers = get_headers(access_token)
+    """Prepare request parameters for HTTP request"""
+    # 헤더 정규화
+    normalized_headers = {}
     if headers:
-        request_headers.update(headers)
+        for key, value in headers.items():
+            # 모든 헤더 키를 소문자로 변환하여 중복 방지
+            normalized_headers[key.lower()] = value
     
+    # 기본 헤더 설정
+    default_headers = {
+        "content-type": "application/json;charset=UTF-8",
+    }
+    
+    # API 키 추가
+    from kiwoom_rest_api.config import get_api_key, get_api_secret
+    default_headers["appkey"] = get_api_key()
+    default_headers["appsecret"] = get_api_secret()
+    
+    # 헤더 병합 (사용자 정의 헤더가 기본 헤더보다 우선)
+    merged_headers = {**default_headers, **normalized_headers}
+    
+    # 액세스 토큰 추가
+    if access_token:
+        merged_headers["authorization"] = f"Bearer {access_token}"
+    
+    # URL 구성
+    from kiwoom_rest_api.config import get_base_url
+    url = endpoint if endpoint.startswith(("http://", "https://")) else f"{get_base_url()}{endpoint}"
+    
+    # 요청 파라미터 구성
     request_params = {
         "url": url,
         "method": method,
-        "headers": request_headers,
+        "headers": merged_headers,
         "timeout": timeout or DEFAULT_TIMEOUT,
     }
     
+    # 쿼리 파라미터 추가
     if params:
         request_params["params"] = params
     
-    if data:
-        if method.upper() in ["GET", "DELETE"]:
-            if not params:
-                request_params["params"] = data
-            else:
-                request_params["params"].update(data)
-        else:
+    # POST/PUT/PATCH 요청용 데이터 추가
+    if method in ["POST", "PUT", "PATCH"] and data:
+        if merged_headers.get("content-type", "").startswith("application/json"):
             request_params["json"] = data
+        else:
+            request_params["data"] = data
     
     return request_params

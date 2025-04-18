@@ -43,12 +43,29 @@ class StockInfo:
     def _make_request(self, method: str, tr_id: str, url: str, **kwargs):
         """API 요청을 실행합니다."""
         headers = kwargs.pop("headers", {})
-        headers["tr_id"] = tr_id
+        headers["api-id"] = tr_id
         headers["content-type"] = "application/json;charset=UTF-8"
+        
+        print(f"\n\na★@kwargs: {kwargs}\n\n")
+        
+        # Check if there's a nested headers in kwargs (e.g. in json payload)
+        if "json" in kwargs and "headers" in kwargs.get("json", {}):
+            headers.update(kwargs["json"]["headers"])
+            del kwargs["json"]["headers"]
+        elif "headers" in kwargs:
+            headers.update(kwargs["headers"])
+            del kwargs["headers"]
+        
+        print(f"\n\na★@headers: {headers}\n\n")
         
         if self.token_manager:
             access_token = self._get_access_token()
             headers["Authorization"] = f"Bearer {access_token}"
+            
+        print(f"\n\n★@headers: {headers}\n\n")
+        print(f"\n\n★@kwargs: {kwargs}\n\n")
+        print(f"\n\n★@url: {url}\n\n")
+        print(f"\n\n★@method: {method}\n\n")
         
         return make_request(
             endpoint=url,
@@ -94,11 +111,13 @@ class StockInfo:
             Dict[str, Any] or Awaitable[Dict[str, Any]]: 주식 기본 정보
         """
         url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
-        data = {"stk_cd": stock_code}
+        data = {"stk_cd": stock_code, "headers": {"cont-yn": "N", "next-key": "0"}}
+        
+        print(f"\n\n★@url: {url}\n\n")
         return self._execute_request("POST", "ka10001", url=url, json=data)
     
     def stock_price_request_ka10002(
-        self, stock_code: str
+        self, stock_code: str, cont_yn: str = "N", next_key: str = ""
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
         """
         주식 현재가를 조회합니다.
@@ -111,7 +130,7 @@ class StockInfo:
             Dict[str, Any] or Awaitable[Dict[str, Any]]: 현재가 정보
         """
         url = f"{self.base_url}/api/dostk/price" if self.base_url else "/api/dostk/price"
-        data = {"stk_cd": stock_code}
+        data = {"stk_cd": stock_code, "headers": {"cont-yn": cont_yn, "next-key": next_key}}
         return self._execute_request("POST", "ka10002", url=url, json=data)
     
     def daily_stock_price_request_ka10003(

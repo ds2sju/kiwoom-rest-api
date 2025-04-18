@@ -1,9 +1,10 @@
 import os
 from typing import Optional
 
+
 # Base URLs
-DEFAULT_BASE_URL = "https://openapi.kiwoom.com/v1"
-SANDBOX_BASE_URL = "https://openapivts.kiwoom.com/v1"
+DEFAULT_BASE_URL = os.environ.get("KIWOOM_DEFAULT_BASE_URL", "https://api.kiwoom.com")
+SANDBOX_BASE_URL = os.environ.get("KIWOOM_SANDBOX_BASE_URL", "https://mockapi.kiwoom.com")
 
 # API Credentials
 API_KEY = os.environ.get("KIWOOM_API_KEY", "")
@@ -36,8 +37,7 @@ def get_api_secret() -> str:
 def get_headers(access_token: Optional[str] = None) -> dict:
     """Return common headers for API requests"""
     headers = {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
     }
     
     if access_token:

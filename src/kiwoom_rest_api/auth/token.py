@@ -56,7 +56,7 @@ class TokenManager:
             data={
                 "grant_type": "client_credentials",
                 "appkey": get_api_key(),
-                "appsecret": get_api_secret(),
+                "secretkey": get_api_secret(),
             },
         )
         
@@ -79,11 +79,14 @@ class TokenManager:
     
     def _update_token_info(self, token_response: Dict[str, Any]) -> None:
         """Update token information from the API response"""
-        self._access_token = token_response.get("access_token")
+        self._access_token = token_response.get("token")
         
         # Calculate expiry time
         if "expires_in" in token_response:
             self._token_expiry = datetime.now() + timedelta(seconds=token_response["expires_in"])
+            
+        if "expires_dt" in token_response:
+            self._token_expiry = datetime.strptime(token_response["expires_dt"], "%Y%m%d%H%M%S")
         
         # Update refresh token if provided
         refresh_token = token_response.get("refresh_token")
@@ -98,3 +101,9 @@ def get_access_token() -> str:
     """Get a valid access token"""
     manager = TokenManager()
     return manager.get_token()
+
+
+
+if __name__ == "__main__":
+    print(get_access_token())
+
