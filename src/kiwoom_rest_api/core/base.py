@@ -1,16 +1,21 @@
 from typing import Any, Dict, Optional, Union
 import json
 from urllib.parse import urljoin
+import httpx
+import inspect # Import inspect
 
 from kiwoom_rest_api.config import get_base_url, get_headers, DEFAULT_TIMEOUT
 
 class APIError(Exception):
-    """Exception raised for API errors"""
-    def __init__(self, status_code: int, error_message: str, error_data: Any = None):
+    """Custom exception for API errors"""
+    def __init__(self, status_code: int, message: str, error_data: dict = None):
         self.status_code = status_code
-        self.error_message = error_message
-        self.error_data = error_data
-        super().__init__(f"API Error (HTTP {status_code}): {error_message}")
+        self.message = message
+        self.error_data = error_data or {}
+        super().__init__(f"API Error (HTTP {status_code}): {message}")
+
+    def __str__(self):
+        return f"API Error (HTTP {self.status_code}): {self.message}"
 
 def make_url(endpoint: str) -> str:
     """Create a full URL from an endpoint"""
@@ -110,3 +115,82 @@ def prepare_request_params(
             request_params["data"] = data
     
     return request_params
+
+async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
+    """Process the asynchronous HTTP response from the Kiwoom API"""
+    print(f"DEBUG process_response_async: type(response) received = {type(response)}")
+    if not isinstance(response, httpx.Response):
+        print("ERROR: process_response_async did not receive an httpx.Response object!")
+        raise TypeError(f"Expected httpx.Response, but got {type(response)}")
+
+    # --- 추가 디버깅 ---
+    json_method = getattr(response, 'json', None)
+    is_json_coro = inspect.iscoroutinefunction(json_method)
+    print(f"DEBUG: inspect.iscoroutinefunction(response.json) = {is_json_coro}")
+    # --- 추가 디버깅 끝 ---
+
+    try:
+        # 성공(200) 응답 처리
+        if response.status_code == 200:
+            try:
+                # 여기서 여전히 TypeError 발생 가능성 있음
+                json_data = await response.json()
+                if isinstance(json_data, dict) and json_data.get("rt_cd") != "0":
+                     error_message = json_data.get("msg1", "Unknown API error message")
+                     raise APIError(response.status_code, error_message, json_data)
+                return json_data
+            except json.JSONDecodeError:
+                 # 여기서도 TypeError 발생 가능성 있음
+                 raw_text_content = await response.text()
+                 error_message = f"Failed to decode JSON response. Content: {raw_text_content[:200]}"
+                 raise APIError(response.status_code, error_message, {"raw_content": raw_text_content})
+            except TypeError as te: # await 실패 시
+                 print(f"ERROR: TypeError on SUCCESS path await: {te}")
+                 # await 없이 직접 접근 시도 (진단용)
+                 try:
+                     json_data = response.json() # await 없이 호출
+                     if isinstance(json_data, dict) and json_data.get("rt_cd") != "0":
+                         error_message = json_data.get("msg1", "Unknown API error message")
+                         raise APIError(response.status_code, error_message, json_data)
+                     return json_data # 성공하면 반환
+                 except Exception as direct_err:
+                     print(f"ERROR: Direct access failed after TypeError: {direct_err}")
+                     raw_text_content = getattr(response, 'text', 'N/A') # text 속성 접근 시도
+                     raise APIError(response.status_code, f"TypeError processing SUCCESS response: {te}. Raw content: {raw_text_content[:200]}", {"raw_content": raw_text_content})
+
+
+        # HTTP 에러(400 등) 처리
+        else:
+            error_message = f"HTTP Error {response.status_code}"
+            error_data = {"status_code": response.status_code}
+            raw_text_content = "Could not retrieve error content"
+
+            # --- 진단: await 없이 text 속성 직접 접근 시도 ---
+            try:
+                if hasattr(response, 'text') and isinstance(response.text, str):
+                    print("DEBUG: Accessing response.text directly as attribute.")
+                    raw_text_content = response.text
+                    error_data["raw_content"] = raw_text_content
+                    error_message += f". Content: {raw_text_content[:500]}" # 내용 조금 더 보기
+
+                    # 텍스트 내용으로 JSON 파싱 시도
+                    try:
+                        error_json = json.loads(raw_text_content)
+                        error_msg1 = error_json.get("msg1", "No msg1 found in error JSON")
+                        error_message = f"HTTP Error {response.status_code}: {error_msg1}" # 에러 메시지 개선
+                        error_data.update(error_json)
+                    except json.JSONDecodeError:
+                        print("DEBUG: Error response body is not JSON.")
+                else:
+                     print("DEBUG: response.text is not a direct string attribute.")
+                     # 여기서 await response.text()를 시도하면 TypeError 발생 가능성 높음
+            except Exception as e_diag:
+                print(f"ERROR: Exception during diagnostic access of response text: {e_diag}")
+            # --- 진단 끝 ---
+
+            # 최종 에러 발생
+            raise APIError(response.status_code, error_message, error_data)
+
+    except httpx.RequestError as e:
+        # 네트워크 관련 에러
+        raise APIError(500, f"Request failed: {str(e)}", {"exception": str(e)})
