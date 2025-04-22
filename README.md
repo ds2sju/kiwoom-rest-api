@@ -75,17 +75,17 @@ poetry add kiwoom-rest-api
     poetry shell
 
     # 도움말 보기
-    python src/kiwoom_rest_api/cli/main.py --help
-    python src/kiwoom_rest_api/cli/main.py ka10001 --help
+    kiwoom --help
+    kiwoom ka10001 --help
 
     # ka10001 명령어 실행 (환경 변수 사용 시)
-    python src/kiwoom_rest_api/cli/main.py ka10001 005930 # 삼성전자 예시
+    kiwoom ka10001 005930 # 삼성전자 예시
 
     # ka10001 명령어 실행 (옵션 사용 시)
-    python src/kiwoom_rest_api/cli/main.py --api-key "YOUR_KEY" --api-secret "YOUR_SECRET" ka10001 005930
+    kiwoom --api-key "YOUR_KEY" --api-secret "YOUR_SECRET" ka10001 005930
 
     # 다른 base URL 사용 시
-    python src/kiwoom_rest_api/cli/main.py --base-url "https://mockapi.kiwoom.com" ka10001 005930
+    kiwoom --base-url "https://mockapi.kiwoom.com" ka10001 005930
 ```
 
 # Docs
