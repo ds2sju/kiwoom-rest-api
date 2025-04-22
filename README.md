@@ -56,6 +56,11 @@ poetry add kiwoom-rest-api
 
 ## CLI Usage
 
+### Using uvx
+```bash
+    uvx --from kiwoom-rest-api kiwoom -k "YOUR_KEY" -s "YOUR_SECRET" ka10001 005930
+```
+
 ```bash
     # Linux/macOS/Windows(git bash)
     export KIWOOM_API_KEY="YOUR_ACTUAL_API_KEY"
