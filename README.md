@@ -11,6 +11,8 @@ Python client for interacting with [Kiwoom REST API](https://openapi.kiwoom.com/
   - [Using Poetry](#using-poetry)
 - [Usage](#Usage)
 - [CLI Usage](#CLI-Usage)
+  - [Using uvx](#Using-uvx)
+  - [Set API Key](#Set-API-Key)
 - [Docs](#Docs)
 - [License](#license)
 
@@ -43,7 +45,7 @@ poetry add kiwoom-rest-api
 
     # 토큰 매니저 초기화
     token_manager = TokenManager()
-    print(f"\n\n★@token_manager: {token_manager}\n\n")
+
     # StockInfo 인스턴스 생성 (base_url 수정)
     stock_info = StockInfo(base_url="https://api.kiwoom.com", token_manager=token_manager)
 
@@ -61,6 +63,7 @@ poetry add kiwoom-rest-api
     uvx --from kiwoom-rest-api kiwoom -k "YOUR_KEY" -s "YOUR_SECRET" ka10001 005930
 ```
 
+### Set API Key
 ```bash
     # Linux/macOS/Windows(git bash)
     export KIWOOM_API_KEY="YOUR_ACTUAL_API_KEY"
