@@ -77,7 +77,8 @@ class StockInfo:
     async def _make_request_async(self, method: str, tr_id: str, url: str, **kwargs):
         """API 요청을 비동기적으로 실행합니다."""
         headers = kwargs.pop("headers", {})
-        headers["tr_id"] = tr_id
+        headers["api-id"] = tr_id
+        headers["content-type"] = "application/json;charset=UTF-8"
         
         if self.token_manager:
             access_token = await self._get_access_token_async()
