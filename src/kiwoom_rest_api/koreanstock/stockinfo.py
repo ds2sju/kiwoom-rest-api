@@ -56,17 +56,10 @@ class StockInfo:
             headers.update(kwargs["headers"])
             del kwargs["headers"]
         
-        print(f"\n\na★@headers: {headers}\n\n")
-        
         if self.token_manager:
             access_token = self._get_access_token()
             headers["Authorization"] = f"Bearer {access_token}"
             
-        print(f"\n\n★@headers: {headers}\n\n")
-        print(f"\n\n★@kwargs: {kwargs}\n\n")
-        print(f"\n\n★@url: {url}\n\n")
-        print(f"\n\n★@method: {method}\n\n")
-        
         return make_request(
             endpoint=url,
             method=method,
@@ -114,7 +107,6 @@ class StockInfo:
         url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
         data = {"stk_cd": stock_code, "headers": {"cont-yn": "N", "next-key": "0"}}
         
-        print(f"\n\n★@url: {url}\n\n")
         return self._execute_request("POST", "ka10001", url=url, json=data)
     
     def stock_price_request_ka10002(

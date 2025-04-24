@@ -26,7 +26,6 @@ async def get_stock_info():
         use_async=True
     )
 
-    print("실제 비동기 API 호출 시작: basic_stock_information_request_ka10001('005930')")
     try:
         # 실제 비동기 API 호출
         result = await stock_info_async.basic_stock_information_request_ka10001("005930")
@@ -43,6 +42,6 @@ async def get_stock_info():
 if __name__ == "__main__":
     load_dotenv("C:/projects/pypi/kiwoom-rest-api/.env")
 
-    print("스크립트 직접 실행 시작...")
+    print("\n\n스크립트 직접 실행 시작...\n\n")
     asyncio.run(get_stock_info())
-    print("스크립트 실행 완료.")
+    print("\n\n스크립트 실행 완료.")

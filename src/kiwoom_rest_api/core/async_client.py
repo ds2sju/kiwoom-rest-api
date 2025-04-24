@@ -46,9 +46,4 @@ async def make_request_async(
             timeout=request_params["timeout"],
         )
 
-    # --- Add Debug Print Here ---
-    print(f"DEBUG make_request_async: type(response) before passing = {type(response)}")
-    # --- End Debug Print ---
-
-    # Pass the *original* httpx.Response object
     return await process_response_async(response)

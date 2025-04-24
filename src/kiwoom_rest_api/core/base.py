@@ -117,8 +117,6 @@ def prepare_request_params(
     return request_params
 
 async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
-    """Process the asynchronous HTTP response from the Kiwoom API"""
-    print(f"DEBUG process_response_async: type(response) received = {type(response)}")
     if not isinstance(response, httpx.Response):
         print("ERROR: process_response_async did not receive an httpx.Response object!")
         raise TypeError(f"Expected httpx.Response, but got {type(response)}")
@@ -135,8 +133,8 @@ async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
             try:
                 # 여기서 여전히 TypeError 발생 가능성 있음
                 json_data = await response.json()
-                if isinstance(json_data, dict) and json_data.get("rt_cd") != "0":
-                     error_message = json_data.get("msg1", "Unknown API error message")
+                if isinstance(json_data, dict) and str(json_data.get("return_code")) != "0":
+                     error_message = json_data.get("return_msg", "Unknown API error message")
                      raise APIError(response.status_code, error_message, json_data)
                 return json_data
             except json.JSONDecodeError:
@@ -149,8 +147,8 @@ async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
                  # await 없이 직접 접근 시도 (진단용)
                  try:
                      json_data = response.json() # await 없이 호출
-                     if isinstance(json_data, dict) and json_data.get("rt_cd") != "0":
-                         error_message = json_data.get("msg1", "Unknown API error message")
+                     if isinstance(json_data, dict) and str(json_data.get("return_code")) != "0":
+                         error_message = json_data.get("return_msg", "Unknown API error message")
                          raise APIError(response.status_code, error_message, json_data)
                      return json_data # 성공하면 반환
                  except Exception as direct_err:
