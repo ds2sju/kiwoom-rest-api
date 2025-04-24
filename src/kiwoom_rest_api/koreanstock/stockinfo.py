@@ -46,8 +46,6 @@ class StockInfo:
         headers["api-id"] = tr_id
         headers["content-type"] = "application/json;charset=UTF-8"
         
-        print(f"\n\na★@kwargs: {kwargs}\n\n")
-        
         # Check if there's a nested headers in kwargs (e.g. in json payload)
         if "json" in kwargs and "headers" in kwargs.get("json", {}):
             headers.update(kwargs["json"]["headers"])
@@ -92,7 +90,7 @@ class StockInfo:
             return self._make_request(method, tr_id, url, **kwargs)
     
     def basic_stock_information_request_ka10001(
-        self, stock_code: str
+        self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
         """
         주식 기본 정보를 조회합니다.
@@ -105,25 +103,36 @@ class StockInfo:
             Dict[str, Any] or Awaitable[Dict[str, Any]]: 주식 기본 정보
         """
         url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
-        data = {"stk_cd": stock_code, "headers": {"cont-yn": "N", "next-key": "0"}}
+        data = {"stk_cd": stock_code, "headers": {"cont-yn": cont_yn, "next-key": next_key}}
         
         return self._execute_request("POST", "ka10001", url=url, json=data)
     
     def stock_price_request_ka10002(
-        self, stock_code: str, cont_yn: str = "N", next_key: str = ""
+        self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
         """
-        주식 현재가를 조회합니다.
-        API ID: ka10002
+        주식 현재가 요청 (실시간 시세)
+        API ID (TR_ID): ka10002 (명세서 예시 ID, 실제 TR ID 확인 필요)
 
         Args:
-            stock_code (str): 종목코드 (예: '005930')
+            stock_code (str): 종목코드 (예: '005930', 'KRX:039490')
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
 
         Returns:
-            Dict[str, Any] or Awaitable[Dict[str, Any]]: 현재가 정보
+            Dict[str, Any] or Awaitable[Dict[str, Any]]: 현재가 정보 딕셔너리 또는 Awaitable 객체
         """
-        url = f"{self.base_url}/api/dostk/price" if self.base_url else "/api/dostk/price"
-        data = {"stk_cd": stock_code, "headers": {"cont-yn": cont_yn, "next-key": next_key}}
+
+        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
+        
+        data = {
+            "stk_cd": stock_code,
+            "headers": {
+                "cont-yn": cont_yn,
+                "next-key": next_key
+            }
+        }
+
         return self._execute_request("POST", "ka10002", url=url, json=data)
     
     def daily_stock_price_request_ka10003(
