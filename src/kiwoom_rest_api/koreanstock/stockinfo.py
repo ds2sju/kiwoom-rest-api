@@ -93,7 +93,7 @@ class StockInfo:
         self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
         """
-        주식 기본 정보를 조회합니다.
+        주식기본정보요청
         API ID: ka10001
 
         Args:
@@ -107,11 +107,11 @@ class StockInfo:
         
         return self._execute_request("POST", "ka10001", url=url, json=data)
     
-    def stock_price_request_ka10002(
+    def stock_trading_agent_request_ka10002(
         self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
         """
-        주식 현재가 요청 (실시간 시세)
+        주식 거래원 요청
         API ID (TR_ID): ka10002 (명세서 예시 ID, 실제 TR ID 확인 필요)
 
         Args:
@@ -138,37 +138,30 @@ class StockInfo:
     def daily_stock_price_request_ka10003(
         self,
         stock_code: str,
-        period_type: str = "D",
-        adjust_price: bool = True,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None
+        cont_yn: str = "N",
+        next_key: str = ""
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
         """
-        일/주/월/년 주가를 조회합니다.
-        API ID: ka10003
+        체결 정보 요청
+        API ID (TR_ID): ka10003 (명세서 예시 ID, 실제 TR ID 확인 필요)
 
         Args:
-            stock_code (str): 종목코드 (예: '005930')
-            period_type (str): 기간구분 (D:일봉, W:주봉, M:월봉, Y:년봉)
-            adjust_price (bool): 수정주가 여부 (True: 수정주가, False: 원주가)
-            start_date (str, optional): 조회 시작일자 (YYYYMMDD)
-            end_date (str, optional): 조회 종료일자 (YYYYMMDD)
+            stock_code (str): 종목코드 (예: '005930', 'KRX:039490')
+            cont_yn (str, optional): 연속조회여부. 응답 헤더의 값을 사용. Defaults to "N".
+            next_key (str, optional): 연속조회키. 응답 헤더의 값을 사용. Defaults to "".
 
         Returns:
-            Dict[str, Any] or Awaitable[Dict[str, Any]]: 주가 데이터
+            Dict[str, Any] or Awaitable[Dict[str, Any]]: 체결 정보 딕셔너리 또는 Awaitable 객체
         """
-        url = f"{self.base_url}/api/dostk/dailyprice" if self.base_url else "/api/dostk/dailyprice"
+        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
+        
         data = {
             "stk_cd": stock_code,
-            "period_div": period_type,
-            "adj_price": "1" if adjust_price else "0"
+            "headers": {
+                "cont-yn": cont_yn,
+                "next-key": next_key
+            }
         }
-        
-        if start_date:
-            data["start_date"] = start_date
-        if end_date:
-            data["end_date"] = end_date
-            
         return self._execute_request("POST", "ka10003", url=url, json=data)
     
     def multiple_stock_quotes_request_ka10004(

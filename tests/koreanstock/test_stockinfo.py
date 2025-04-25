@@ -19,16 +19,35 @@ stock_info = StockInfo(base_url="https://api.kiwoom.com", token_manager=token_ma
 
 try:
     ka10001_result = stock_info.basic_stock_information_request_ka10001("005930")
-    ka10002_result = stock_info.stock_price_request_ka10002("005930")
+    ka10002_result = stock_info.stock_trading_agent_request_ka10002("005930")
+    ka10003_result = stock_info.daily_stock_price_request_ka10003("005930")
+
     
     if isinstance(ka10001_result, dict):
-        print("\n\n\nka10001_result 응답:\n", json.dumps(ka10001_result, indent=4, ensure_ascii=False))
+        if str(ka10001_result.get("return_code")) == "0":
+            print("\n\n\nka10001_result 응답: 성공")
+        else:
+            print("\n\n\nka10001_result 응답: 실패")
+        # print("\n\n\nka10001_result 응답:\n", json.dumps(ka10001_result, indent=4, ensure_ascii=False))
     else:
         print("\n\n\nka10001_result is not a dictionary.")
         
     if isinstance(ka10002_result, dict):
-        print("\n\n\nka10002_result 응답:\n", json.dumps(ka10002_result, indent=4, ensure_ascii=False))
+        if str(ka10002_result.get("return_code")) == "0":
+            print("\n\n\nka10002_result 응답: 성공")
+        else:
+            print("\n\n\nka10002_result 응답: 실패")
+        # print("\n\n\nka10002_result 응답:\n", json.dumps(ka10002_result, indent=4, ensure_ascii=False))
     else:
         print("\n\n\nka10002_result is not a dictionary.")
+    
+    if isinstance(ka10003_result, dict):
+        if str(ka10003_result.get("return_code")) == "0":
+            print("\n\n\nka10003_result 응답: 성공")
+        else:
+            print("\n\n\nka10003_result 응답: 실패")
+        # print("\n\n\nka10003_result 응답:\n", json.dumps(ka10003_result, indent=4, ensure_ascii=False))
+    else:
+        print("\n\n\nka10003_result is not a dictionary.")
 except Exception as e:
     print("에러 발생:", str(e))

@@ -40,7 +40,19 @@ def process_response(response: Any) -> Dict[str, Any]:
             return {}
         
         try:
-            return response.json()
+            response_json = response.json()
+            
+            access_control_expose_headers = response.headers.get("access-control-expose-headers")
+            if access_control_expose_headers:
+                access_control_expose_headers = access_control_expose_headers.split(",")
+                
+                for header in access_control_expose_headers:
+                    response_json[header] = response.headers.get(header)
+                
+                return response_json
+                
+            return response_json
+        
         except json.JSONDecodeError:
             return {"content": response.text}
     
@@ -133,6 +145,7 @@ async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
             try:
                 # 여기서 여전히 TypeError 발생 가능성 있음
                 json_data = await response.json()
+                
                 if isinstance(json_data, dict) and str(json_data.get("return_code")) != "0":
                      error_message = json_data.get("return_msg", "Unknown API error message")
                      raise APIError(response.status_code, error_message, json_data)
