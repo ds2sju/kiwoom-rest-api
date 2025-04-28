@@ -146,6 +146,14 @@ async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
                 # 여기서 여전히 TypeError 발생 가능성 있음
                 json_data = await response.json()
                 
+                access_control_expose_headers = response.headers.get("access-control-expose-headers")
+                if access_control_expose_headers:
+                    access_control_expose_headers = access_control_expose_headers.split(",")
+                    
+                    for header in access_control_expose_headers:
+                        json_data[header] = response.headers.get(header)
+                
+                
                 if isinstance(json_data, dict) and str(json_data.get("return_code")) != "0":
                      error_message = json_data.get("return_msg", "Unknown API error message")
                      raise APIError(response.status_code, error_message, json_data)
@@ -159,11 +167,20 @@ async def process_response_async(response: httpx.Response) -> Dict[str, Any]:
                  print(f"ERROR: TypeError on SUCCESS path await: {te}")
                  # await 없이 직접 접근 시도 (진단용)
                  try:
-                     json_data = response.json() # await 없이 호출
-                     if isinstance(json_data, dict) and str(json_data.get("return_code")) != "0":
-                         error_message = json_data.get("return_msg", "Unknown API error message")
-                         raise APIError(response.status_code, error_message, json_data)
-                     return json_data # 성공하면 반환
+                    json_data = response.json() # await 없이 호출
+                     
+                       
+                    access_control_expose_headers = response.headers.get("access-control-expose-headers")
+                    if access_control_expose_headers:
+                        access_control_expose_headers = access_control_expose_headers.split(",")
+                        
+                        for header in access_control_expose_headers:
+                            json_data[header] = response.headers.get(header)
+                            
+                    if isinstance(json_data, dict) and str(json_data.get("return_code")) != "0":
+                        error_message = json_data.get("return_msg", "Unknown API error message")
+                        raise APIError(response.status_code, error_message, json_data)
+                    return json_data # 성공하면 반환
                  except Exception as direct_err:
                      print(f"ERROR: Direct access failed after TypeError: {direct_err}")
                      raw_text_content = getattr(response, 'text', 'N/A') # text 속성 접근 시도
