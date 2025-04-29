@@ -40,10 +40,9 @@ class StockInfo:
             return await self.token_manager.get_token_async()
         return self._get_access_token()  # 비동기 메서드가 없으면 동기 버전 사용
     
-    def _make_request(self, method: str, tr_id: str, url: str, **kwargs):
+    def _make_request(self, method: str, url: str, **kwargs):
         """API 요청을 실행합니다."""
         headers = kwargs.pop("headers", {})
-        headers["api-id"] = tr_id
         headers["content-type"] = "application/json;charset=UTF-8"
         
         # Check if there's a nested headers in kwargs (e.g. in json payload)
@@ -65,10 +64,10 @@ class StockInfo:
             **kwargs
         )
     
-    async def _make_request_async(self, method: str, tr_id: str, url: str, **kwargs):
+    async def _make_request_async(self, method: str, url: str, **kwargs):
         """API 요청을 비동기적으로 실행합니다."""
         headers = kwargs.pop("headers", {})
-        headers["api-id"] = tr_id
+
         headers["content-type"] = "application/json;charset=UTF-8"
         
         if self.token_manager:
@@ -82,13 +81,16 @@ class StockInfo:
             **kwargs
         )
     
-    def _execute_request(self, method: str, tr_id: str, url: str, **kwargs):
+    def _execute_request(self, method: str, **kwargs):
         """동기 또는 비동기 요청을 실행합니다."""
+        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
+        
         if self.use_async:
-            return self._make_request_async(method, tr_id, url, **kwargs)
-        else:
-            return self._make_request(method, tr_id, url, **kwargs)
+            return self._make_request_async(method, url, **kwargs)
+
+        return self._make_request(method, url, **kwargs)
     
+
     def basic_stock_information_request_ka10001(
         self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
@@ -102,10 +104,20 @@ class StockInfo:
         Returns:
             Dict[str, Any] or Awaitable[Dict[str, Any]]: 주식 기본 정보
         """
-        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
-        data = {"stk_cd": stock_code, "headers": {"cont-yn": cont_yn, "next-key": next_key}}
         
-        return self._execute_request("POST", "ka10001", url=url, json=data)
+        headers = {
+            "cont-yn": cont_yn, 
+            "next-key": next_key,
+            "api-id": "ka10001"
+        }
+
+        body = {
+            "stk_cd": stock_code, 
+        }
+        
+
+        
+        return self._execute_request("POST", json=body, headers=headers)
     
     def stock_trading_agent_request_ka10002(
         self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
@@ -122,18 +134,18 @@ class StockInfo:
         Returns:
             Dict[str, Any] or Awaitable[Dict[str, Any]]: 현재가 정보 딕셔너리 또는 Awaitable 객체
         """
-
-        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
         
-        data = {
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10002"
+        }
+        
+        body = {
             "stk_cd": stock_code,
-            "headers": {
-                "cont-yn": cont_yn,
-                "next-key": next_key
-            }
         }
 
-        return self._execute_request("POST", "ka10002", url=url, json=data)
+        return self._execute_request("POST", json=body, headers=headers)
     
     def daily_stock_price_request_ka10003(
         self,
@@ -153,67 +165,69 @@ class StockInfo:
         Returns:
             Dict[str, Any] or Awaitable[Dict[str, Any]]: 체결 정보 딕셔너리 또는 Awaitable 객체
         """
-        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
         
-        data = {
-            "stk_cd": stock_code,
-            "headers": {
-                "cont-yn": cont_yn,
-                "next-key": next_key
-            }
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10003"
         }
-        return self._execute_request("POST", "ka10003", url=url, json=data)
-    
-    def multiple_stock_quotes_request_ka10004(
-        self, stock_codes: List[str]
+        
+        body = {
+            "stk_cd": stock_code,
+        }
+        
+        return self._execute_request("POST", json=body, headers=headers)
+
+    def credit_trading_trend_request_ka10013(
+        self,
+        stock_code: str,
+        date: str,
+        query_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
-        """
-        복수종목 현재가를 조회합니다.
-        API ID: ka10004
+        """신용매매동향 요청
 
         Args:
-            stock_codes (List[str]): 종목코드 리스트 (최대 50개)
+            stock_code (str): 종목코드 (예: "005930")
+            date (str): 조회 일자 (YYYYMMDD 형식)
+            query_type (str): 조회구분 (1:융자, 2:대주)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
 
         Returns:
-            Dict[str, Any] or Awaitable[Dict[str, Any]]: 복수종목 현재가 데이터
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "crd_trde_trend": [
+                    {
+                        "dt": "20241101",
+                        "cur_prc": "65100",
+                        "pred_pre_sig": "0",
+                        "pred_pre": "0",
+                        "trde_qty": "0",
+                        "new": "",
+                        "rpya": "",
+                        "remn": "",
+                        "amt": "",
+                        "pre": "",
+                        "shr_rt": "",
+                        "remn_rt": ""
+                    },
+                    ...
+                ]
+            }
         """
-        if len(stock_codes) > 50:
-            raise ValueError("최대 50개의 종목코드만 한 번에 조회할 수 있습니다.")
-            
-        url = f"{self.base_url}/api/dostk/multiquote" if self.base_url else "/api/dostk/multiquote"
-        data = {"stk_cd_list": ";".join(stock_codes)}
-        return self._execute_request("POST", "ka10004", url=url, json=data)
-    
-    def stock_volume_trend_request_ka10005(
-        self, stock_code: str
-    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
-        """
-        거래량 급증 종목을 조회합니다.
-        API ID: ka10005
-
-        Args:
-            stock_code (str): 종목코드 (예: '005930')
-
-        Returns:
-            Dict[str, Any] or Awaitable[Dict[str, Any]]: 거래량 급증 데이터
-        """
-        url = f"{self.base_url}/api/dostk/volume" if self.base_url else "/api/dostk/volume"
-        data = {"stk_cd": stock_code}
-        return self._execute_request("POST", "ka10005", url=url, json=data)
-    
-    def stock_order_book_request_ka10006(
-        self, stock_code: str
-    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
-        """
-        호가 정보를 조회합니다.
-        API ID: ka10006
-
-        Args:
-            stock_code (str): 종목코드 (예: '005930')
-
-        Returns:
-            Dict[str, Any] or Awaitable[Dict[str, Any]]: 호가 정보 데이터
-        """
-        url = f"{self.base_url}/api/dostk/orderbook" if self.base_url else "/api/dostk/orderbook"
-        data = {"stk_cd": stock_code}
-        return self._execute_request("POST", "ka10006", url=url, json=data)
+        
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10013"
+        }
+        
+        body = {
+            "stk_cd": stock_code,
+            "dt": date,
+            "qry_tp": query_type,
+        }
+        
+        return self._execute_request("POST", json=body, headers=headers)
