@@ -231,3 +231,75 @@ class StockInfo:
         }
         
         return self._execute_request("POST", json=body, headers=headers)
+    
+    def daily_transaction_details_request_ka10015(
+        self,
+        stock_code: str,
+        start_date: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """일별거래상세요청
+
+        Args:
+            stock_code (str): 종목코드 (예: "005930")
+            start_date (str): 시작일자 (YYYYMMDD 형식)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "daly_trde_dtl": [
+                    {
+                        "dt": "20241105",
+                        "close_pric": "135300",
+                        "pred_pre_sig": "0",
+                        "pred_pre": "0",
+                        "flu_rt": "0.00",
+                        "trde_qty": "0",
+                        "trde_prica": "0",
+                        "bf_mkrt_trde_qty": "",
+                        "bf_mkrt_trde_wght": "",
+                        "opmr_trde_qty": "",
+                        "opmr_trde_wght": "",
+                        "af_mkrt_trde_qty": "",
+                        "af_mkrt_trde_wght": "",
+                        "tot_3": "0",
+                        "prid_trde_qty": "0",
+                        "cntr_str": "",
+                        "for_poss": "",
+                        "for_wght": "",
+                        "for_netprps": "",
+                        "orgn_netprps": "",
+                        "ind_netprps": "",
+                        "frgn": "",
+                        "crd_remn_rt": "",
+                        "prm": "",
+                        "bf_mkrt_trde_prica": "",
+                        "bf_mkrt_trde_prica_wght": "",
+                        "opmr_trde_prica": "",
+                        "opmr_trde_prica_wght": "",
+                        "af_mkrt_trde_prica": "",
+                        "af_mkrt_trde_prica_wght": ""
+                    },
+                    ...
+                ]
+            }
+        """
+        
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10015"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "stk_cd": stock_code,
+            "strt_dt": start_date
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
