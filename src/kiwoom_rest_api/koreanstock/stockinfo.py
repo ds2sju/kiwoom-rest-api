@@ -375,8 +375,6 @@ class StockInfo:
             "stex_tp": stock_exchange_type
         }
 
-        if self.use_async:
-            return self._request_async("POST", path, headers=headers, json=data)
-        return self._request("POST", path, headers=headers, json=data)
+        return self._execute_request("POST", json=data, headers=headers)
 
 

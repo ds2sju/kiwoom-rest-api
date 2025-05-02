@@ -23,6 +23,7 @@ try:
     ka10003_result = stock_info.daily_stock_price_request_ka10003("005930")
     ka10013_result = stock_info.credit_trading_trend_request_ka10013("005930", "20241101", "1")
     ka10015_result = stock_info.daily_transaction_details_request_ka10015("005930", "20241101")
+    ka10016_result = stock_info.reported_low_price_request_ka10016("000", "1", "1", "0", "00000", "0", "0", "5", "1")
     
     print("\n\n")
     
@@ -68,5 +69,14 @@ try:
         # print("ka10015_result 응답:\n", json.dumps(ka10015_result, indent=4, ensure_ascii=False))
     else:
         print("ka10015_result is not a dictionary.")
+        
+    if isinstance(ka10016_result, dict):
+        if str(ka10016_result.get("return_code")) == "0":
+            print("ka10016_result 응답: 성공")
+        else:
+            print("ka10016_result 응답: 실패")
+        # print("ka10016_result 응답:\n", json.dumps(ka10016_result, indent=4, ensure_ascii=False))
+    else:
+        print("ka10016_result is not a dictionary.")
 except Exception as e:
     print("에러 발생:", str(e))
