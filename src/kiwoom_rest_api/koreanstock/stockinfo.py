@@ -377,4 +377,75 @@ class StockInfo:
 
         return self._execute_request("POST", json=data, headers=headers)
 
+    def upper_lower_limit_price_request_ka10017(
+        self,
+        market_type: str,
+        updown_type: str,
+        sort_type: str,
+        stock_condition: str,
+        trade_quantity_type: str,
+        credit_condition: str,
+        trade_gold_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """상하한가 요청
 
+        Args:
+            market_type (str): 시장구분 (000:전체, 001:코스피, 101:코스닥)
+            updown_type (str): 상하한구분 (1:상한, 2:상승, 3:보합, 4:하한, 5:하락, 6:전일상한, 7:전일하한)
+            sort_type (str): 정렬구분 (1:종목코드순, 2:연속횟수순(상위100개), 3:등락률순)
+            stock_condition (str): 종목조건 (0:전체조회, 1:관리종목제외, 3:우선주제외, ...)
+            trade_quantity_type (str): 거래량구분 (00000:전체조회, 00010:만주이상, ...)
+            credit_condition (str): 신용조건 (0:전체조회, 1:신용융자A군, ...)
+            trade_gold_type (str): 매매금구분 (0:전체조회, 1:1천원미만, 2:1천원~2천원, ...)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "updown_pric": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_infr": "",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "+235500",
+                        "pred_pre_sig": "1",
+                        "pred_pre": "+54200",
+                        "flu_rt": "+29.90",
+                        "trde_qty": "0",
+                        "pred_trde_qty": "96197",
+                        "sel_req": "0",
+                        "sel_bid": "0",
+                        "buy_bid": "+235500",
+                        "buy_req": "4",
+                        "cnt": "1"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10017"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "mrkt_tp": market_type,
+            "updown_tp": updown_type,
+            "sort_tp": sort_type,
+            "stk_cnd": stock_condition,
+            "trde_qty_tp": trade_quantity_type,
+            "crd_cnd": credit_condition,
+            "trde_gold_tp": trade_gold_type,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+    
