@@ -449,3 +449,144 @@ class StockInfo:
 
         return self._execute_request("POST", json=data, headers=headers)
     
+    def near_high_low_price_request_ka10018(
+        self,
+        high_low_type: str,
+        approach_rate: str,
+        market_type: str,
+        trade_quantity_type: str,
+        stock_condition: str,
+        credit_condition: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """고저가근접 요청
+
+        Args:
+            high_low_type (str): 고저구분 (1:고가, 2:저가)
+            approach_rate (str): 근접율 (05:0.5, 10:1.0, 15:1.5, 20:2.0, 25:2.5, 30:3.0)
+            market_type (str): 시장구분 (000:전체, 001:코스피, 101:코스닥)
+            trade_quantity_type (str): 거래량구분 (00000:전체조회, 00010:만주이상, ...)
+            stock_condition (str): 종목조건 (0:전체조회, 1:관리종목제외, ...)
+            credit_condition (str): 신용조건 (0:전체조회, 1:신용융자A군, ...)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "high_low_pric_alacc": [
+                    {
+                        "stk_cd": "004930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "334",
+                        "pred_pre_sig": "0",
+                        "pred_pre": "0",
+                        "flu_rt": "0.00",
+                        "trde_qty": "3",
+                        "sel_bid": "0",
+                        "buy_bid": "0",
+                        "tdy_high_pric": "334",
+                        "tdy_low_pric": "334"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10018"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "high_low_tp": high_low_type,
+            "alacc_rt": approach_rate,
+            "mrkt_tp": market_type,
+            "trde_qty_tp": trade_quantity_type,
+            "stk_cnd": stock_condition,
+            "crd_cnd": credit_condition,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def rapid_price_change_request_ka10019(
+        self,
+        market_type: str,
+        fluctuation_type: str,
+        time_type: str,
+        time: str,
+        trade_quantity_type: str,
+        stock_condition: str,
+        credit_condition: str,
+        price_condition: str,
+        updown_include: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """가격급등락 요청
+
+        Args:
+            market_type (str): 시장구분 (000:전체, 001:코스피, 101:코스닥, 201:코스피200)
+            fluctuation_type (str): 등락구분 (1:급등, 2:급락)
+            time_type (str): 시간구분 (1:분전, 2:일전)
+            time (str): 시간 (분 혹은 일 입력)
+            trade_quantity_type (str): 거래량구분 (00000:전체조회, 00010:만주이상, ...)
+            stock_condition (str): 종목조건 (0:전체조회, 1:관리종목제외, ...)
+            credit_condition (str): 신용조건 (0:전체조회, 1:신용융자A군, ...)
+            price_condition (str): 가격조건 (0:전체조회, 1:1천원미만, ...)
+            updown_include (str): 상하한포함 (0:미포함, 1:포함)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "pric_jmpflu": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_cls": "",
+                        "stk_nm": "삼성전자",
+                        "pred_pre_sig": "2",
+                        "pred_pre": "+300",
+                        "flu_rt": "+0.57",
+                        "base_pric": "51600",
+                        "cur_prc": "+52700",
+                        "base_pre": "1100",
+                        "trde_qty": "2400",
+                        "jmp_rt": "+2.13"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10019"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "mrkt_tp": market_type,
+            "flu_tp": fluctuation_type,
+            "tm_tp": time_type,
+            "tm": time,
+            "trde_qty_tp": trade_quantity_type,
+            "stk_cnd": stock_condition,
+            "crd_cnd": credit_condition,
+            "pric_cnd": price_condition,
+            "updown_incls": updown_include,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+    
