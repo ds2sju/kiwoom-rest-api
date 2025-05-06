@@ -590,3 +590,170 @@ class StockInfo:
 
         return self._execute_request("POST", json=data, headers=headers)
     
+    def trading_volume_update_request_ka10024(
+        self,
+        market_type: str,
+        cycle_type: str,
+        trade_quantity_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """거래량갱신 요청
+
+        Args:
+            market_type (str): 시장구분 (000:전체, 001:코스피, 101:코스닥)
+            cycle_type (str): 주기구분 (5:5일, 10:10일, 20:20일, 60:60일, 250:250일)
+            trade_quantity_type (str): 거래량구분 (5:5천주이상, 10:만주이상, 50:5만주이상, 100:10만주이상, ...)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "trde_qty_updt": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "+74800",
+                        "pred_pre_sig": "1",
+                        "pred_pre": "+17200",
+                        "flu_rt": "+29.86",
+                        "prev_trde_qty": "243520",
+                        "now_trde_qty": "435771",
+                        "sel_bid": "0",
+                        "buy_bid": "+74800"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10024"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "mrkt_tp": market_type,
+            "cycle_tp": cycle_type,
+            "trde_qty_tp": trade_quantity_type,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+    
+    def supply_concentration_request_ka10025(
+        self,
+        market_type: str,
+        supply_concentration_rate: str,
+        current_price_entry: str,
+        supply_count: str,
+        cycle_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """매물대집중 요청
+
+        Args:
+            market_type (str): 시장구분 (000:전체, 001:코스피, 101:코스닥)
+            supply_concentration_rate (str): 매물집중비율 (0~100 입력)
+            current_price_entry (str): 현재가진입 (0:현재가 매물대 진입 포함안함, 1:현재가 매물대 진입포함)
+            supply_count (str): 매물대수 (숫자입력)
+            cycle_type (str): 주기구분 (50:50일, 100:100일, 150:150일, 200:200일, 250:250일, 300:300일)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "prps_cnctr": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "30000",
+                        "pred_pre_sig": "3",
+                        "pred_pre": "0",
+                        "flu_rt": "0.00",
+                        "now_trde_qty": "0",
+                        "pric_strt": "31350",
+                        "pric_end": "31799",
+                        "prps_qty": "4",
+                        "prps_rt": "+50.00"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10025"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "mrkt_tp": market_type,
+            "prps_cnctr_rt": supply_concentration_rate,
+            "cur_prc_entry": current_price_entry,
+            "prpscnt": supply_count,
+            "cycle_tp": cycle_type,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+    
+    def high_low_per_request_ka10026(
+        self,
+        per_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """고저PER 요청
+
+        Args:
+            per_type (str): PER구분 (1:저PBR, 2:고PBR, 3:저PER, 4:고PER, 5:저ROE, 6:고ROE)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "high_low_per": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "per": "0.44",
+                        "cur_prc": "4930",
+                        "pred_pre_sig": "3",
+                        "pred_pre": "0",
+                        "flu_rt": "0.00",
+                        "now_trde_qty": "0",
+                        "sel_bid": "0"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10026"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "pertp": per_type,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
