@@ -11,7 +11,8 @@ class StockInfo:
         self, 
         base_url: str = None, 
         token_manager=None, 
-        use_async: bool = False
+        use_async: bool = False,
+        resource_url: str = "/api/dostk/stkinfo"
     ):
         """
         StockInfo 클래스 초기화
@@ -24,7 +25,7 @@ class StockInfo:
         self.base_url = base_url
         self.token_manager = token_manager
         self.use_async = use_async
-        
+        self.resource_url = resource_url
         # 사용할 request 함수 결정
         self._request_func = make_request_async if use_async else make_request
     
@@ -83,7 +84,7 @@ class StockInfo:
     
     def _execute_request(self, method: str, **kwargs):
         """동기 또는 비동기 요청을 실행합니다."""
-        url = f"{self.base_url}/api/dostk/stkinfo" if self.base_url else "/api/dostk/stkinfo"
+        url = f"{self.base_url}{self.resource_url}" if self.base_url else f"/{self.resource_url}"
         
         if self.use_async:
             return self._make_request_async(method, url, **kwargs)
