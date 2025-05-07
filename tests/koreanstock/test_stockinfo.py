@@ -20,11 +20,12 @@ stock_info = StockInfo(base_url="https://api.kiwoom.com", token_manager=token_ma
 def print_result(result_name, result, print_result):
     if isinstance(result, dict):
         if str(result.get("return_code")) == "0":
-            print(f"{result_name} 응답: 성공")
+            if print_result:
+                print(f"{result_name} 응답:\n", json.dumps(result, indent=4, ensure_ascii=False))
+            else:
+                print(f"{result_name} 응답: 성공")
         else:
             print(f"{result_name} 응답: 실패")
-        if print_result:
-            print(f"{result_name} 응답:\n", json.dumps(result, indent=4, ensure_ascii=False))
     else:
         print(f"{result_name} is not a dictionary.")
 
@@ -59,5 +60,29 @@ try:
         stock_exchange_type="3"      # 통합 거래소
     ), False)
     
+    print_result("ka10028_result", stock_info.rate_of_change_compared_to_opening_price_request_ka10028(
+        sort_type               ="1",    # 시가 기준
+        trade_quantity_condition="0000", # 전체 거래량
+        market_type             ="000",  # 전체 시장
+        updown_include          ="1",    # 상하한 포함
+        stock_condition         ="0",    # 전체 종목
+        credit_condition        ="0",    # 전체 신용조건
+        trade_price_condition   ="0",    # 전체 거래대금
+        fluctuation_condition   ="1",    # 상위 등락률
+        stock_exchange_type     ="3"     # 통합 거래소
+    ), print_result=False)
+    
+    print_result("ka10043_result", stock_info.trading_agent_supply_demand_analysis_request_ka10043(
+    stock_code         ="005930",   # 종목코드
+    start_date         ="20241031", # 시작일자
+    end_date           ="20241107", # 종료일자
+    query_date_type    ="0",        # 기간으로 조회
+    point_type         ="0",        # 당일 기준
+    period             ="5",        # 5일 기간
+    sort_base          ="1",        # 종가순 정렬
+    member_code        ="36",       # 회원사코드
+    stock_exchange_type="3"         # 통합 거래소
+    ), print_result=False)
+
 except Exception as e:
     print("에러 발생:", str(e))

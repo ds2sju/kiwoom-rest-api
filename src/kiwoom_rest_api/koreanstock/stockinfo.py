@@ -758,3 +758,146 @@ class StockInfo:
         }
 
         return self._execute_request("POST", json=data, headers=headers)
+
+    def rate_of_change_compared_to_opening_price_request_ka10028(
+        self,
+        sort_type: str,
+        trade_quantity_condition: str,
+        market_type: str,
+        updown_include: str,
+        stock_condition: str,
+        credit_condition: str,
+        trade_price_condition: str,
+        fluctuation_condition: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """시가대비등락률 요청
+
+        Args:
+            sort_type (str)                = 정렬구분 (1:시가, 2:고가, 3:저가, 4:기준가)
+            trade_quantity_condition (str) = 거래량조건 (0000:전체조회, 0010:만주이상, ...)
+            market_type (str)              = 시장구분 (000:전체, 001:코스피, 101:코스닥)
+            updown_include (str)           = 상하한포함 (0:불포함, 1:포함)
+            stock_condition (str)          = 종목조건 (0:전체조회, 1:관리종목제외, ...)
+            credit_condition (str)         = 신용조건 (0:전체조회, 1:신용융자A군, ...)
+            trade_price_condition (str)    = 거래대금조건 (0:전체조회, 3:3천만원이상, ...)
+            fluctuation_condition (str)    = 등락조건 (1:상위, 2:하위)
+            stock_exchange_type (str)      = 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional)        = 연속조회여부. Defaults to "N".
+            next_key (str, optional)       = 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "open_pric_pre_flu_rt": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "+74800",
+                        "pred_pre_sig": "1",
+                        "pred_pre": "+17200",
+                        "flu_rt": "+29.86",
+                        "open_pric": "+65000",
+                        "high_pric": "+74800",
+                        "low_pric": "-57000",
+                        "open_pric_pre": "+15.08",
+                        "now_trde_qty": "448203",
+                        "cntr_str": "346.54"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10028"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "sort_tp": sort_type,
+            "trde_qty_cnd": trade_quantity_condition,
+            "mrkt_tp": market_type,
+            "updown_incls": updown_include,
+            "stk_cnd": stock_condition,
+            "crd_cnd": credit_condition,
+            "trde_prica_cnd": trade_price_condition,
+            "flu_cnd": fluctuation_condition,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+    
+    def trading_agent_supply_demand_analysis_request_ka10043(
+        self,
+        stock_code: str,
+        start_date: str,
+        end_date: str,
+        query_date_type: str,
+        point_type: str,
+        period: str,
+        sort_base: str,
+        member_code: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """거래원매물대분석 요청
+
+        Args:
+            stock_code (str)          = 종목코드 (예: "005930")
+            start_date (str)          = 시작일자 (YYYYMMDD 형식)
+            end_date (str)            = 종료일자 (YYYYMMDD 형식)
+            query_date_type (str)     = 조회기간구분 (0:기간으로 조회, 1:시작일자, 종료일자로 조회)
+            point_type (str)          = 시점구분 (0:당일, 1:전일)
+            period (str)              = 기간 (5:5일, 10:10일, 20:20일, 40:40일, 60:60일, 120:120일)
+            sort_base (str)           = 정렬기준 (1:종가순, 2:날짜순)
+            member_code (str)         = 회원사코드 (회원사 코드는 ka10102 조회)
+            stock_exchange_type (str) = 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional)   = 연속조회여부. Defaults to "N".
+            next_key (str, optional)  = 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "trde_ori_prps_anly": [
+                    {
+                        "dt": "20241105",
+                        "close_pric": "135300",
+                        "pre_sig": "2",
+                        "pred_pre": "+1700",
+                        "sel_qty": "43",
+                        "buy_qty": "1090",
+                        "netprps_qty": "1047",
+                        "trde_qty_sum": "1133",
+                        "trde_wght": "+1317.44"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10043"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "stk_cd": stock_code,
+            "strt_dt": start_date,
+            "end_dt": end_date,
+            "qry_dt_tp": query_date_type,
+            "pot_tp": point_type,
+            "dt": period,
+            "sort_base": sort_base,
+            "mmcm_cd": member_code,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
