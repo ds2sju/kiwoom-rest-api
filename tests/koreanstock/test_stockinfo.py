@@ -83,6 +83,36 @@ try:
     member_code        ="36",       # 회원사코드
     stock_exchange_type="3"         # 통합 거래소
     ), print_result=False)
+    
+    print_result("ka10052_result-1", stock_info.trading_agent_instant_trading_volume_request_ka10052(
+    member_code="888",          # 회원사코드 (다이와)
+    stock_code="",              # 전체 종목
+    market_type="0",            # 전체 시장
+    quantity_type="0",          # 전체 수량
+    price_type="0",             # 전체 가격대
+    stock_exchange_type="3"     # 통합 거래소
+    ), print_result=False)
+    
+    print_result("ka10052_result-2", stock_info.trading_agent_instant_trading_volume_request_ka10052(
+    member_code="888",
+    stock_code="005930",        # 삼성전자
+    market_type="3"             # 종목 지정
+    ), print_result=False)
+    
+    print_result("ka10054_result", stock_info.volatility_mitigation_device_triggered_stocks_request_ka10054(
+    market_type="000",  # 전체 시장
+    before_market_type="0",  # 전체
+    stock_code="",  # 전체 종목
+    motion_type="0",  # 전체 발동
+    skip_stock="000000000",  # 전종목 포함
+    stock_exchange_type="3"  # 통합
+    ), print_result=False)
+    
+    print_result("ka10055_result", stock_info.today_vs_previous_day_execution_volume_request_ka10055(
+        stock_code="005930",        # 삼성전자
+        today_or_previous="2",      # 전일 데이터
+        stock_exchange_type="3"     # 통합 거래소
+    ), print_result=False)
 
 except Exception as e:
     print("에러 발생:", str(e))

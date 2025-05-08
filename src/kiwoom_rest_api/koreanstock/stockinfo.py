@@ -91,7 +91,7 @@ class StockInfo:
 
         return self._make_request(method, url, **kwargs)
     
-
+    
     def basic_stock_information_request_ka10001(
         self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
     ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
@@ -898,6 +898,208 @@ class StockInfo:
             "sort_base": sort_base,
             "mmcm_cd": member_code,
             "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def trading_agent_instant_trading_volume_request_ka10052(
+        self,
+        member_code: str,
+        stock_code: str = "",
+        market_type: str = "0",
+        quantity_type: str = "0",
+        price_type: str = "0",
+        stock_exchange_type: str = "3",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """거래원순간거래량 요청
+
+        Args:
+            member_code (str): 회원사코드 (회원사 코드는 ka10102 조회)
+            stock_code (str, optional): 종목코드. Defaults to "".
+            market_type (str, optional): 시장구분 (0:전체, 1:코스피, 2:코스닥, 3:종목). Defaults to "0".
+            quantity_type (str, optional): 수량구분 (0:전체, 1:1000주, 2:2000주, 10:10000주, ...). Defaults to "0".
+            price_type (str, optional): 가격구분 (0:전체, 1:1천원 미만, 8:1천원 이상, ...). Defaults to "0".
+            stock_exchange_type (str, optional): 거래소구분 (1:KRX, 2:NXT, 3:통합). Defaults to "3".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "trde_ori_mont_trde_qty": [
+                    {
+                        "tm": "161437",
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "trde_ori_nm": "다이와",
+                        "tp": "-매도",
+                        "mont_trde_qty": "-399928",
+                        "acc_netprps": "-1073004",
+                        "cur_prc": "+57700",
+                        "pred_pre_sig": "2",
+                        "pred_pre": "400",
+                        "flu_rt": "+0.70"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10052"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "mmcm_cd": member_code,
+            "stk_cd": stock_code,
+            "mrkt_tp": market_type,
+            "qty_tp": quantity_type,
+            "pric_tp": price_type,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+    
+    def volatility_mitigation_device_triggered_stocks_request_ka10054(
+        self,
+        market_type: str,
+        before_market_type: str,
+        stock_code: str = "",
+        motion_type: str = "0",
+        skip_stock: str = "000000000",
+        trade_quantity_type: str = "0",
+        min_trade_quantity: str = "0",
+        max_trade_quantity: str = "0",
+        trade_price_type: str = "0",
+        min_trade_price: str = "0",
+        max_trade_price: str = "0",
+        motion_direction: str = "0",
+        stock_exchange_type: str = "3",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """변동성완화장치발동종목 요청
+
+        Args:
+            market_type (str): 시장구분 (000:전체, 001:코스피, 101:코스닥)
+            before_market_type (str): 장전구분 (0:전체, 1:정규시장, 2:시간외단일가)
+            stock_code (str, optional): 종목코드. Defaults to "".
+            motion_type (str, optional): 발동구분 (0:전체, 1:정적VI, 2:동적VI, 3:동적VI + 정적VI). Defaults to "0".
+            skip_stock (str, optional): 제외종목 (000000000:전종목포함, 111111111:전종목제외). Defaults to "000000000".
+            trade_quantity_type (str, optional): 거래량구분 (0:사용안함, 1:사용). Defaults to "0".
+            min_trade_quantity (str, optional): 최소거래량. Defaults to "0".
+            max_trade_quantity (str, optional): 최대거래량. Defaults to "0".
+            trade_price_type (str, optional): 거래대금구분 (0:사용안함, 1:사용). Defaults to "0".
+            min_trade_price (str, optional): 최소거래대금. Defaults to "0".
+            max_trade_price (str, optional): 최대거래대금. Defaults to "0".
+            motion_direction (str, optional): 발동방향 (0:전체, 1:상승, 2:하락). Defaults to "0".
+            stock_exchange_type (str, optional): 거래소구분 (1:KRX, 2:NXT, 3:통합). Defaults to "3".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "motn_stk": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "acc_trde_qty": "1105968",
+                        "motn_pric": "67000",
+                        "dynm_dispty_rt": "+9.30",
+                        "trde_cntr_proc_time": "172311",
+                        "virelis_time": "172511",
+                        "viaplc_tp": "동적",
+                        "dynm_stdpc": "61300",
+                        "static_stdpc": "0",
+                        "static_dispty_rt": "0.00",
+                        "open_pric_pre_flu_rt": "+16.93",
+                        "vimotn_cnt": "23",
+                        "stex_tp": "NXT"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10054"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "mrkt_tp": market_type,
+            "bf_mkrt_tp": before_market_type,
+            "stk_cd": stock_code,
+            "motn_tp": motion_type,
+            "skip_stk": skip_stock,
+            "trde_qty_tp": trade_quantity_type,
+            "min_trde_qty": min_trade_quantity,
+            "max_trde_qty": max_trade_quantity,
+            "trde_prica_tp": trade_price_type,
+            "min_trde_prica": min_trade_price,
+            "max_trde_prica": max_trade_price,
+            "motn_drc": motion_direction,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def today_vs_previous_day_execution_volume_request_ka10055(
+        self,
+        stock_code: str,
+        today_or_previous: str,
+        market_type: str = "",
+        stock_exchange_type: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """당일전일체결량 요청
+
+        Args:
+            stock_code (str): 종목코드 (예: "005930", "KRX:039490")
+            today_or_previous (str): 당일전일 (1:당일, 2:전일)
+            market_type (str, optional): 시장구분. Defaults to "".
+            stock_exchange_type (str, optional): 거래소구분. Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "tdy_pred_cntr_qty": [
+                    {
+                        "cntr_tm": "171945",
+                        "cntr_pric": "+74800",
+                        "pred_pre_sig": "1",
+                        "pred_pre": "+17200",
+                        "flu_rt": "+29.86",
+                        "cntr_qty": "-1793",
+                        "acc_trde_qty": "446203",
+                        "acc_trde_prica": "33225"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10055"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "stk_cd": stock_code,
+            "tdy_pred": today_or_previous
         }
 
         return self._execute_request("POST", json=data, headers=headers)
