@@ -1103,3 +1103,258 @@ class StockInfo:
         }
 
         return self._execute_request("POST", json=data, headers=headers)
+
+    def daily_trading_stocks_by_investor_type_request_ka10058(
+        self,
+        start_date: str,
+        end_date: str,
+        trade_type: str,
+        market_type: str,
+        investor_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """투자자별일별매매종목 요청
+
+        Args:
+            start_date (str): 시작일자 (YYYYMMDD)
+            end_date (str): 종료일자 (YYYYMMDD)
+            trade_type (str): 매매구분 (순매도:1, 순매수:2)
+            market_type (str): 시장구분 (001:코스피, 101:코스닥)
+            investor_type (str): 투자자구분 (8000:개인, 9000:외국인, 1000:금융투자, 3000:투신, 
+                                5000:기타금융, 4000:은행, 2000:보험, 6000:연기금, 7000:국가, 
+                                7100:기타법인, 9999:기관계)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "invsr_daly_trde_stk": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "netslmt_qty": "+4464",
+                        "netslmt_amt": "+25467",
+                        "prsm_avg_pric": "57056",
+                        "cur_prc": "+61300",
+                        "pre_sig": "2",
+                        "pred_pre": "+4000",
+                        "avg_pric_pre": "+4244",
+                        "pre_rt": "+7.43",
+                        "dt_trde_qty": "1554171"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10058"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "strt_dt": start_date,
+            "end_dt": end_date,
+            "trde_tp": trade_type,
+            "mrkt_tp": market_type,
+            "invsr_tp": investor_type,
+            "stex_tp": stock_exchange_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def stock_data_by_investor_institution_request_ka10059(
+        self,
+        date: str,
+        stock_code: str,
+        amount_quantity_type: str,
+        trade_type: str,
+        unit_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """종목별투자자기관별 요청
+
+        Args:
+            date (str): 일자 (YYYYMMDD)
+            stock_code (str): 종목코드 (예: "005930", "KRX:039490")
+            amount_quantity_type (str): 금액수량구분 (1:금액, 2:수량)
+            trade_type (str): 매매구분 (0:순매수, 1:매수, 2:매도)
+            unit_type (str): 단위구분 (1000:천주, 1:단주)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "stk_invsr_orgn": [
+                    {
+                        "dt": "20241107",
+                        "cur_prc": "+61300",
+                        "pre_sig": "2",
+                        "pred_pre": "+4000",
+                        "flu_rt": "+698",
+                        "acc_trde_qty": "1105968",
+                        "acc_trde_prica": "64215",
+                        "ind_invsr": "1584",
+                        "frgnr_invsr": "-61779",
+                        "orgn": "60195",
+                        "fnnc_invt": "25514",
+                        "insrnc": "0",
+                        "invtrt": "0",
+                        "etc_fnnc": "34619",
+                        "bank": "4",
+                        "penfnd_etc": "-1",
+                        "samo_fund": "58",
+                        "natn": "0",
+                        "etc_corp": "0",
+                        "natfor": "1"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10059"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "dt": date,
+            "stk_cd": stock_code,
+            "amt_qty_tp": amount_quantity_type,
+            "trde_tp": trade_type,
+            "unit_tp": unit_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def aggregate_stock_data_by_investor_institution_request_ka10061(
+        self,
+        stock_code: str,
+        start_date: str,
+        end_date: str,
+        amount_quantity_type: str,
+        trade_type: str,
+        unit_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """종목별투자자기관별합계 요청
+
+        Args:
+            stock_code (str): 종목코드 (예: "005930", "KRX:039490")
+            start_date (str): 시작일자 (YYYYMMDD)
+            end_date (str): 종료일자 (YYYYMMDD)
+            amount_quantity_type (str): 금액수량구분 (1:금액, 2:수량)
+            trade_type (str): 매매구분 (0:순매수, 1:매수, 2:매도)
+            unit_type (str): 단위구분 (1000:천주, 1:단주)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "stk_invsr_orgn_tot": [
+                    {
+                        "ind_invsr": "--28837",
+                        "frgnr_invsr": "--40142",
+                        "orgn": "+64891",
+                        "fnnc_invt": "+72584",
+                        "insrnc": "--9071",
+                        "invtrt": "--7790",
+                        "etc_fnnc": "+35307",
+                        "bank": "+526",
+                        "penfnd_etc": "--22783",
+                        "samo_fund": "--3881",
+                        "natn": "0",
+                        "etc_corp": "+1974",
+                        "natfor": "+2114"
+                    }
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10061"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "stk_cd": stock_code,
+            "strt_dt": start_date,
+            "end_dt": end_date,
+            "amt_qty_tp": amount_quantity_type,
+            "trde_tp": trade_type,
+            "unit_tp": unit_type
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def today_vs_previous_day_execution_request_ka10084(
+        self,
+        stock_code: str,
+        today_or_previous: str,
+        tick_or_minute: str,
+        time: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """당일전일체결 요청
+
+        Args:
+            stock_code (str): 종목코드 (예: "005930", "KRX:039490")
+            today_or_previous (str): 당일전일 (당일:1, 전일:2)
+            tick_or_minute (str): 틱분 (0:틱, 1:분)
+            time (str, optional): 조회시간 4자리 (예: 0900, 1430). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "tdy_pred_cntr": [
+                    {
+                        "tm": "112711",
+                        "cur_prc": "+128300",
+                        "pred_pre": "+700",
+                        "pre_rt": "+0.55",
+                        "pri_sel_bid_unit": "-0",
+                        "pri_buy_bid_unit": "+128300",
+                        "cntr_trde_qty": "-1",
+                        "sign": "2",
+                        "acc_trde_qty": "2",
+                        "acc_trde_prica": "0",
+                        "cntr_str": "0.00"
+                    },
+                    ...
+                ]
+            }
+        """
+        # 헤더 구성
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10084"
+        }
+        
+        # 요청 데이터 구성
+        data = {
+            "stk_cd": stock_code,
+            "tdy_pred": today_or_previous,
+            "tic_min": tick_or_minute,
+            "tm": time
+        }
+
+        return self._execute_request("POST", json=data, headers=headers)

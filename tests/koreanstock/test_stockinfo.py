@@ -25,7 +25,7 @@ def print_result(result_name, result, print_result):
             else:
                 print(f"{result_name} 응답: 성공")
         else:
-            print(f"{result_name} 응답: 실패")
+            print(f"{result_name} 응답: 실패\n", json.dumps(result, indent=4, ensure_ascii=False))
     else:
         print(f"{result_name} is not a dictionary.")
 
@@ -112,6 +112,39 @@ try:
         stock_code="005930",        # 삼성전자
         today_or_previous="2",      # 전일 데이터
         stock_exchange_type="3"     # 통합 거래소
+    ), print_result=False)
+
+    print_result("ka10058_result", stock_info.daily_trading_stocks_by_investor_type_request_ka10058(
+        start_date="20241106",     # 2024년 11월 6일
+        end_date="20241107",       # 2024년 11월 7일
+        trade_type="2",            # 순매수
+        market_type="101",         # 코스닥
+        investor_type="8000",      # 개인투자자
+        stock_exchange_type="3"    # 통합 거래소
+    ), print_result=False)
+
+    print_result("ka10059_result", stock_info.stock_data_by_investor_institution_request_ka10059(
+        date="20241107",           # 2024년 11월 7일
+        stock_code="005930",       # 삼성전자
+        amount_quantity_type="1",  # 금액기준
+        trade_type="0",            # 순매수
+        unit_type="1000"           # 천주 단위
+    ), print_result=False)
+
+    print_result("ka10061_result", stock_info.aggregate_stock_data_by_investor_institution_request_ka10061(
+        stock_code="005930",         # 삼성전자
+        start_date="20241007",       # 2024년 10월 7일
+        end_date="20241107",         # 2024년 11월 7일
+        amount_quantity_type="1",    # 금액기준
+        trade_type="0",              # 순매수
+        unit_type="1000"             # 천주 단위
+    ), print_result=False)
+
+    print_result("ka10084_result", stock_info.today_vs_previous_day_execution_request_ka10084(
+        stock_code="005930",        # 삼성전자
+        today_or_previous="1",      # 당일 데이터
+        tick_or_minute="0",         # 틱 단위
+        time=""                     # 전체 시간
     ), print_result=False)
 
 except Exception as e:
