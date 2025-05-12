@@ -2,9 +2,9 @@ from typing import Dict, Optional, Any, List, Union, Callable, Awaitable
 
 from kiwoom_rest_api.core.sync_client import make_request
 from kiwoom_rest_api.core.async_client import make_request_async
+from kiwoom_rest_api.core.base_api import KiwoomBaseAPI
 
-
-class StockInfo:
+class StockInfo(KiwoomBaseAPI):
     """한국 주식 종목 정보 관련 API를 제공하는 클래스"""
     
     def __init__(
@@ -22,75 +22,12 @@ class StockInfo:
             token_manager: 토큰 관리자 객체
             use_async (bool): 비동기 클라이언트 사용 여부 (기본값: False)
         """
-        self.base_url = base_url
-        self.token_manager = token_manager
-        self.use_async = use_async
-        self.resource_url = resource_url
-        # 사용할 request 함수 결정
-        self._request_func = make_request_async if use_async else make_request
-    
-    def _get_access_token(self) -> Optional[str]:
-        """토큰 매니저로부터 액세스 토큰을 가져옵니다."""
-        if self.token_manager:
-            return self.token_manager.get_token()
-        return None
-    
-    async def _get_access_token_async(self) -> Optional[str]:
-        """토큰 매니저로부터 비동기적으로 액세스 토큰을 가져옵니다."""
-        if self.token_manager and hasattr(self.token_manager, 'get_token_async'):
-            return await self.token_manager.get_token_async()
-        return self._get_access_token()  # 비동기 메서드가 없으면 동기 버전 사용
-    
-    def _make_request(self, method: str, url: str, **kwargs):
-        """API 요청을 실행합니다."""
-        headers = kwargs.pop("headers", {})
-        headers["content-type"] = "application/json;charset=UTF-8"
-        
-        # Check if there's a nested headers in kwargs (e.g. in json payload)
-        if "json" in kwargs and "headers" in kwargs.get("json", {}):
-            headers.update(kwargs["json"]["headers"])
-            del kwargs["json"]["headers"]
-        elif "headers" in kwargs:
-            headers.update(kwargs["headers"])
-            del kwargs["headers"]
-        
-        if self.token_manager:
-            access_token = self._get_access_token()
-            headers["Authorization"] = f"Bearer {access_token}"
-            
-        return make_request(
-            endpoint=url,
-            method=method,
-            headers=headers,
-            **kwargs
+        super().__init__(
+            base_url=base_url,
+            token_manager=token_manager,
+            use_async=use_async,
+            resource_url=resource_url
         )
-    
-    async def _make_request_async(self, method: str, url: str, **kwargs):
-        """API 요청을 비동기적으로 실행합니다."""
-        headers = kwargs.pop("headers", {})
-
-        headers["content-type"] = "application/json;charset=UTF-8"
-        
-        if self.token_manager:
-            access_token = await self._get_access_token_async()
-            headers["Authorization"] = f"Bearer {access_token}"
-        
-        return await make_request_async(
-            endpoint=url,
-            method=method,
-            headers=headers,
-            **kwargs
-        )
-    
-    def _execute_request(self, method: str, **kwargs):
-        """동기 또는 비동기 요청을 실행합니다."""
-        url = f"{self.base_url}{self.resource_url}" if self.base_url else f"/{self.resource_url}"
-        
-        if self.use_async:
-            return self._make_request_async(method, url, **kwargs)
-
-        return self._make_request(method, url, **kwargs)
-    
     
     def basic_stock_information_request_ka10001(
         self, stock_code: str, cont_yn: str = "N", next_key: str = "0"
