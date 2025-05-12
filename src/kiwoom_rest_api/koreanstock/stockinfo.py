@@ -1358,3 +1358,357 @@ class StockInfo:
         }
 
         return self._execute_request("POST", json=data, headers=headers)
+    
+    def watchlist_stock_information_request_ka10095(
+        self,
+        stock_code: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """관심종목정보 요청
+
+        Args:
+            stock_code (str): 종목코드 (여러개 입력시 |로 구분)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "atn_stk_infr": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "+156600",
+                        "base_pric": "121700",
+                        "pred_pre": "+34900",
+                        "pred_pre_sig": "2",
+                        "flu_rt": "+28.68",
+                        "trde_qty": "118636",
+                        "trde_prica": "14889",
+                        "cntr_qty": "-1",
+                        "cntr_str": "172.01",
+                        "pred_trde_qty_pre": "+1995.22",
+                        "sel_bid": "+156700",
+                        "buy_bid": "+156600",
+                        ...
+                    }
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10095"
+        }
+        data = {
+            "stk_cd": stock_code
+        }
+        return self._execute_request("POST", json=data, headers=headers)
+        
+    def stock_information_list_request_ka10099(
+        self,
+        market_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """종목정보 리스트 요청
+
+        Args:
+            market_type (str): 시장구분 (0:코스피,10:코스닥,3:ELW,8:ETF,30:K-OTC,50:코넥스,5:신주인수권,4:뮤추얼펀드,6:리츠,9:하이일드)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "list": [
+                    {
+                        "code": "005930",
+                        "name": "삼성전자",
+                        "listCount": "0000000123759593",
+                        "auditInfo": "투자주의환기종목",
+                        "regDay": "20091204",
+                        "lastPrice": "00000197",
+                        "state": "관리종목",
+                        "marketCode": "10",
+                        "marketName": "코스닥",
+                        ...
+                    }
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10099"
+        }
+        data = {
+            "mrkt_tp": market_type
+        }
+        return self._execute_request("POST", json=data, headers=headers)
+        
+    def stock_information_inquiry_request_ka10100(
+        self,
+        stock_code: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """종목정보 조회 요청
+
+        Args:
+            stock_code (str): 종목코드 (6자리)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "code": "005930",
+                "name": "삼성전자",
+                "listCount": "0000000026034239",
+                "auditInfo": "정상",
+                "regDay": "20090803",
+                "lastPrice": "00136000",
+                "state": "증거금20%|담보대출|신용가능",
+                "marketCode": "0",
+                "marketName": "거래소",
+                "upName": "금융업",
+                "upSizeName": "대형주",
+                "companyClassName": "",
+                "orderWarning": "0",
+                "nxtEnable": "Y",
+                "return_code": 0,
+                "return_msg": "정상적으로 처리되었습니다"
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10100"
+        }
+        data = {
+            "stk_cd": stock_code
+        }
+        return self._execute_request("POST", json=data, headers=headers)
+        
+    def industry_code_list_request_ka10101(
+        self,
+        market_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """산업코드 리스트 요청
+
+        Args:
+            market_type (str): 시장구분 (0:코스피, 1:코스닥, 2:KOSPI200, 4:KOSPI100, 7:KRX100)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "list": [
+                    {
+                        "marketCode": "0",
+                        "code": "001",
+                        "name": "종합(KOSPI)",
+                        "group": "1"
+                    },
+                    ...
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10101"
+        }
+        data = {
+            "mrkt_tp": market_type
+        }
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def member_company_list_request_ka10102(
+        self,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """회원사코드 리스트 요청
+
+        Args:
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "list": [
+                    {
+                        "code": "001",
+                        "name": "교  보",
+                        "gb": "0"
+                    },
+                    ...
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10102"
+        }
+        data = {}
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def top_50_program_buy_request_ka90003(
+        self,
+        trade_upper_type: str,
+        amount_quantity_type: str,
+        market_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """프로그램순매수상위50 요청
+
+        Args:
+            trade_upper_type (str): 매매상위구분 (1:순매도상위, 2:순매수상위)
+            amount_quantity_type (str): 금액수량구분 (1:금액, 2:수량)
+            market_type (str): 시장구분 (P00101:코스피, P10102:코스닥)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "prm_netprps_upper_50": [
+                    {
+                        "rank": "1",
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "123000",
+                        "flu_sig": "+",
+                        "pred_pre": "+1000",
+                        "flu_rt": "+0.82",
+                        "acc_trde_qty": "1234567",
+                        "prm_sell_amt": "1000000",
+                        "prm_buy_amt": "2000000",
+                        "prm_netprps_amt": "1000000"
+                    },
+                    ...
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka90003"
+        }
+        data = {
+            "trde_upper_tp": trade_upper_type,
+            "amt_qty_tp": amount_quantity_type,
+            "mrkt_tp": market_type,
+            "stex_tp": stock_exchange_type
+        }
+        return self._execute_request("POST", json=data, headers=headers)
+
+    def stock_wise_program_trading_status_request_ka90004(
+        self,
+        date: str,
+        market_type: str,
+        stock_exchange_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """종목별 프로그램 매매상태 요청
+
+        Args:
+            date (str): 일자 (YYYYMMDD)
+            market_type (str): 시장구분 (P00101:코스피, P10102:코스닥)
+            stock_exchange_type (str): 거래소구분 (1:KRX, 2:NXT, 3:통합)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "tot_1": "0",
+                "tot_2": "2",
+                "tot_3": "0",
+                "tot_4": "2",
+                "tot_5": "0",
+                "tot_6": "",
+                "stk_prm_trde_prst": [
+                    {
+                        "stk_cd": "005930",
+                        "stk_nm": "삼성전자",
+                        "cur_prc": "-75000",
+                        "flu_sig": "5",
+                        "pred_pre": "-2800",
+                        "buy_cntr_qty": "0",
+                        "buy_cntr_amt": "0",
+                        "sel_cntr_qty": "0",
+                        "sel_cntr_amt": "0",
+                        "netprps_prica": "0",
+                        "all_trde_rt": "+0.00"
+                    },
+                    ...
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka90004"
+        }
+        data = {
+            "dt": date,
+            "mrkt_tp": market_type,
+            "stex_tp": stock_exchange_type
+        }
+        return self._execute_request("POST", json=data, headers=headers)
+
+
+    def margin_trading_transaction_details_request_ka90012(
+        self,
+        date: str,
+        market_type: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> Union[Dict[str, Any], Awaitable[Dict[str, Any]]]:
+        """매매대출(대차) 거래내역 요청
+
+        Args:
+            date (str): 일자 (YYYYMMDD)
+            market_type (str): 시장구분 (001:코스피, 101:코스닥)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            Union[Dict[str, Any], Awaitable[Dict[str, Any]]]: 응답 데이터
+            {
+                "dbrt_trde_prps": [
+                    {
+                        "stk_nm": "삼성전자",
+                        "stk_cd": "005930",
+                        "dbrt_trde_cntrcnt": "20262",
+                        "dbrt_trde_rpy": "3493",
+                        "rmnd": "12812813",
+                        "remn_amt": "1026306"
+                    },
+                    ...
+                ]
+            }
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka90012"
+        }
+        data = {
+            "dt": date,
+            "mrkt_tp": market_type
+        }
+        return self._execute_request("POST", json=data, headers=headers)

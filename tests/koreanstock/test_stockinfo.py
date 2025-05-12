@@ -146,6 +146,42 @@ try:
         tick_or_minute="0",         # 틱 단위
         time=""                     # 전체 시간
     ), print_result=False)
+    
+    print_result("ka10095_result", stock_info.watchlist_stock_information_request_ka10095(
+        stock_code="005930|000660",  # 여러 종목코드 |로 구분
+    ), print_result=False)
+    
+    print_result("ka10099_result", stock_info.stock_information_list_request_ka10099(
+        market_type="0"  # 코스피
+    ), print_result=False)
+
+    print_result("ka10100_result", stock_info.stock_information_inquiry_request_ka10100(
+        stock_code="005930"  # 삼성전자
+    ), print_result=False)
+
+    print_result("ka10101_result", stock_info.industry_code_list_request_ka10101(
+        market_type="0"  # 코스피
+    ), print_result=False)
+
+    print_result("ka10102_result", stock_info.member_company_list_request_ka10102(), print_result=False)
+    
+    print_result("ka90003_result", stock_info.top_50_program_buy_request_ka90003(
+        trade_upper_type="2",         # 순매수상위
+        amount_quantity_type="1",     # 금액
+        market_type="P00101",         # 코스피
+        stock_exchange_type="1"       # KRX
+    ), print_result=False)
+
+    print_result("ka90004_result", stock_info.stock_wise_program_trading_status_request_ka90004(
+        date="20241125",           # 일자
+        market_type="P00101",      # 코스피
+        stock_exchange_type="1"    # KRX
+    ), print_result=False)
+
+    print_result("ka90012_result", stock_info.margin_trading_transaction_details_request_ka90012(
+        date="20241101",        # 일자
+        market_type="101"       # 코스닥
+    ), print_result=False)
 
 except Exception as e:
     print("에러 발생:", str(e))
