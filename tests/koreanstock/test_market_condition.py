@@ -104,11 +104,11 @@ try:
         stock_code="005930",
         query_date="20241125",
         indicator_type="0"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka10087_result", market_condition.after_hours_single_price_request_ka10087(
         stock_code="005930"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka90005_result", market_condition.program_trading_trend_by_time_request_ka90005(
         date="20241101",
@@ -116,25 +116,25 @@ try:
         market_type="P00101",
         minute_tick_type="1",
         stock_exchange_type="1"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka90006_result", market_condition.program_trading_arbitrage_balance_trend_request_ka90006(
         date="20241125",
         stock_exchange_type="1"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka90007_result", market_condition.cumulative_program_trading_trend_request_ka90007(
         date="20240525",
         amount_quantity_type="1",
         market_type="0",
         stock_exchange_type="3"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka90008_result", market_condition.stockwise_program_trading_by_hour_request_ka90008(
         amount_quantity_type="1",
         stock_code="005930",
         date="20241125"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka90010_result", market_condition.program_trading_trend_by_date_request_ka90010(
         date="20241125",
@@ -142,11 +142,11 @@ try:
         market_type="P00101",
         minute_tick_type="0",
         stock_exchange_type="1"
-    ), print_result=True)
+    ), print_result=False)
 
     print_result("ka90013_result", market_condition.stockwise_program_trading_by_day_request_ka90013(
         stock_code="005930"
-    ), print_result=True)
+    ), print_result=False)
 
 except Exception as e:
     print("에러 발생:", str(e))
