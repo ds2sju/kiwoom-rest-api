@@ -33,8 +33,23 @@ def print_result(result_name, result, print_result):
 try:
     print("\n\n test 실행")
     
+    print_result("ka10008_result", foreign_institution.foreign_investor_stockwise_trading_trend_request_ka10008(
+        stock_code="005930"
+    ), print_result=False)
     
+    print_result("ka10009_result", foreign_institution.institutional_stock_request_ka10009(
+        stock_code="005930"
+    ), print_result=False)
     
+    print_result("ka10131_result", foreign_institution.institution_foreign_consecutive_trading_status_request_ka10131(
+        dt="1",
+        mrkt_tp="001",
+        netslmt_tp="2",
+        stk_inds_tp="0",
+        amt_qty_tp="0",
+        stex_tp="1"
+    ), print_result=False)
+   
 
 except Exception as e:
     print("에러 발생:", str(e))
