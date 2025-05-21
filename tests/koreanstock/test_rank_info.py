@@ -170,6 +170,55 @@ try:
     print_result("ka10040_result", rank_info.main_trading_brokers_today_request_ka10040(
         stk_cd="005930"  # 삼성전자
     ), print_result=False)
+    
+    print_result("ka10042_result", rank_info.top_net_buying_brokers_request_ka10042(
+        stk_cd="005930",  # 삼성전자
+        qry_dt_tp="0",  # 기간으로 조회
+        pot_tp="0",  # 당일
+        sort_base="1",  # 종가순
+        dt="5"  # 5일
+    ), print_result=False)
+    
+    print_result("ka10053_result", rank_info.top_departed_trading_brokers_today_request_ka10053(
+        stk_cd="005930",  # 삼성전자
+    ), print_result=False)
+    
+    print_result("ka10062_result", rank_info.same_day_net_buying_ranking_request_ka10062(
+        strt_dt="20241106",  # 시작일자
+        mrkt_tp="000",  # 전체
+        trde_tp="1",  # 순매수
+        sort_cnd="1",  # 순매수순위정렬
+        unit_tp="0",  # 전체
+        stex_tp="3"  # 통합
+    ), print_result=False)
+    
+    print_result("ka10065_result", rank_info.top_intraday_investor_trading_request_ka10065(
+        trde_tp="1",  # 순매수
+        mrkt_tp="000",  # 전체
+        orgn_tp="9000"  # 외국인
+    ), print_result=False)
+    
+    print_result("ka10069_result", rank_info.top_10_short_sale_stocks_request_ka10069(
+        strt_dt="20241106",  # 시작일자
+        mrkt_tp="000",  # 전체
+        end_dt="20241107",  # 종료일자
+    ), print_result=False)
+    
+    print_result("ka10098_result", rank_info.after_market_price_change_rate_ranking_request_ka10098(
+        mrkt_tp="000",  # 전체
+        sort_base="1",  # 종가순
+        stk_cnd="0",  # 전체조회
+        trde_qty_cnd="0",  # 전체조회
+        crd_cnd="0",  # 전체조회
+        trde_prica="0",  # 전체조회
+    ), print_result=False)
+    
+    print_result("ka90009_result", rank_info.top_foreign_institution_trades_request_ka90009(
+        mrkt_tp="000",  # 전체
+        amt_qty_tp="0",  # 전체조회
+        qry_dt_tp="0",  # 기간으로 조회
+        stex_tp="3"  # 통합
+    ), print_result=False)
 
 except Exception as e:
     print("에러 발생:", str(e))

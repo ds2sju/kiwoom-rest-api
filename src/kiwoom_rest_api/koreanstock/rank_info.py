@@ -1745,3 +1745,643 @@ class RankInfo(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def top_net_buying_brokers_request_ka10042(
+        self,
+        stk_cd: str,
+        qry_dt_tp: str,
+        pot_tp: str,
+        sort_base: str,
+        strt_dt: str = "",
+        end_dt: str = "",
+        dt: str = "",
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """순매수거래원순위를 조회합니다.
+
+        Args:
+            stk_cd (str): 종목코드 (거래소별 종목코드)
+                - KRX: 039490
+                - NXT: 039490_NX
+                - SOR: 039490_AL
+            qry_dt_tp (str): 조회기간구분
+                - 0: 기간으로 조회
+                - 1: 시작일자, 종료일자로 조회
+            pot_tp (str): 시점구분
+                - 0: 당일
+                - 1: 전일
+            sort_base (str): 정렬기준
+                - 1: 종가순
+                - 2: 날짜순
+            strt_dt (str, optional): 시작일자 (YYYYMMDD 형식). Defaults to "".
+            end_dt (str, optional): 종료일자 (YYYYMMDD 형식). Defaults to "".
+            dt (str, optional): 기간
+                - 5: 5일
+                - 10: 10일
+                - 20: 20일
+                - 40: 40일
+                - 60: 60일
+                - 120: 120일
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 순매수거래원순위 데이터
+                {
+                    "netprps_trde_ori_rank": [  # 순매수거래원순위
+                        {
+                            "rank": str,  # 순위
+                            "mmcm_cd": str,  # 회원사코드
+                            "mmcm_nm": str,  # 회원사명
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.top_net_buying_brokers_request_ka10042(
+            ...     stk_cd="005930",
+            ...     qry_dt_tp="0",
+            ...     pot_tp="0",
+            ...     sort_base="1",
+            ...     dt="5"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10042",
+        }
+
+        data = {
+            "stk_cd": stk_cd,
+            "qry_dt_tp": qry_dt_tp,
+            "pot_tp": pot_tp,
+            "sort_base": sort_base,
+        }
+
+        # Optional parameters
+        if strt_dt:
+            data["strt_dt"] = strt_dt
+        if end_dt:
+            data["end_dt"] = end_dt
+        if dt:
+            data["dt"] = dt
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def top_departed_trading_brokers_today_request_ka10053(
+        self,
+        stk_cd: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """당일 상위 이탈원 정보를 조회합니다.
+
+        Args:
+            stk_cd (str): 종목코드 (거래소별 종목코드)
+                - KRX: 039490
+                - NXT: 039490_NX
+                - SOR: 039490_AL
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 당일 상위 이탈원 데이터
+                {
+                    "tdy_upper_scesn_ori": [  # 당일상위이탈원
+                        {
+                            "sel_scesn_tm": str,  # 매도이탈시간
+                            "sell_qty": str,  # 매도수량
+                            "sel_upper_scesn_ori": str,  # 매도상위이탈원
+                            "buy_scesn_tm": str,  # 매수이탈시간
+                            "buy_qty": str,  # 매수수량
+                            "buy_upper_scesn_ori": str,  # 매수상위이탈원
+                            "qry_dt": str,  # 조회일자
+                            "qry_tm": str,  # 조회시간
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.top_departed_trading_brokers_today_request_ka10053(
+            ...     stk_cd="005930"  # 삼성전자
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10053",
+        }
+
+        data = {
+            "stk_cd": stk_cd,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+
+    def same_day_net_buying_ranking_request_ka10062(
+        self,
+        strt_dt: str,
+        mrkt_tp: str,
+        trde_tp: str,
+        sort_cnd: str,
+        unit_tp: str,
+        stex_tp: str,
+        end_dt: str = "",
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """동일순매매순위를 조회합니다.
+
+        Args:
+            strt_dt (str): 시작일자 (YYYYMMDD 형식)
+            mrkt_tp (str): 시장구분
+                - 000: 전체
+                - 001: 코스피
+                - 101: 코스닥
+            trde_tp (str): 매매구분
+                - 1: 순매수
+                - 2: 순매도
+            sort_cnd (str): 정렬조건
+                - 1: 수량
+                - 2: 금액
+        unit_tp (str): 단위구분
+            - 1: 단주
+            - 1000: 천주
+        stex_tp (str): 거래소구분
+            - 1: KRX
+            - 2: NXT
+            - 3: 통합
+        end_dt (str, optional): 종료일자 (YYYYMMDD 형식). Defaults to "".
+        cont_yn (str, optional): 연속조회여부. Defaults to "N".
+        next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 동일순매매순위 데이터
+                {
+                    "eql_nettrde_rank": [  # 동일순매매순위
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "rank": str,  # 순위
+                            "stk_nm": str,  # 종목명
+                            "cur_prc": str,  # 현재가
+                            "pre_sig": str,  # 대비기호
+                            "pred_pre": str,  # 전일대비
+                            "flu_rt": str,  # 등락율
+                            "acc_trde_qty": str,  # 누적거래량
+                            "orgn_nettrde_qty": str,  # 기관순매매수량
+                            "orgn_nettrde_amt": str,  # 기관순매매금액
+                            "orgn_nettrde_avg_pric": str,  # 기관순매매평균가
+                            "for_nettrde_qty": str,  # 외인순매매수량
+                            "for_nettrde_amt": str,  # 외인순매매금액
+                            "for_nettrde_avg_pric": str,  # 외인순매매평균가
+                            "nettrde_qty": str,  # 순매매수량
+                            "nettrde_amt": str,  # 순매매금액
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.same_day_net_buying_ranking_request_ka10062(
+            ...     strt_dt="20241106",
+            ...     mrkt_tp="000",
+            ...     trde_tp="1",
+            ...     sort_cnd="1",
+            ...     unit_tp="1",
+            ...     stex_tp="3",
+            ...     end_dt="20241107"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10062",
+        }
+
+        data = {
+            "strt_dt": strt_dt,
+            "mrkt_tp": mrkt_tp,
+            "trde_tp": trde_tp,
+            "sort_cnd": sort_cnd,
+            "unit_tp": unit_tp,
+            "stex_tp": stex_tp,
+        }
+
+        # Optional parameter
+        if end_dt:
+            data["end_dt"] = end_dt
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def top_intraday_investor_trading_request_ka10065(
+        self,
+        trde_tp: str,
+        mrkt_tp: str,
+        orgn_tp: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """장중 투자자별 매매 상위 종목을 조회합니다.
+
+        Args:
+            trde_tp (str): 매매구분
+                - 1: 순매수
+                - 2: 순매도
+            mrkt_tp (str): 시장구분
+                - 000: 전체
+                - 001: 코스피
+                - 101: 코스닥
+            orgn_tp (str): 기관구분
+                - 9000: 외국인
+                - 9100: 외국계
+                - 1000: 금융투자
+                - 3000: 투신
+                - 5000: 기타금융
+                - 4000: 은행
+                - 2000: 보험
+                - 6000: 연기금
+                - 7000: 국가
+                - 7100: 기타법인
+                - 9999: 기관계
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 장중 투자자별 매매 상위 종목 데이터
+                {
+                    "opmr_invsr_trde_upper": [  # 장중투자자별매매상위
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "stk_nm": str,  # 종목명
+                            "sel_qty": str,  # 매도량
+                            "buy_qty": str,  # 매수량
+                            "netslmt": str,  # 순매도
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.top_intraday_investor_trading_request_ka10065(
+            ...     trde_tp="1",  # 순매수
+            ...     mrkt_tp="000",  # 전체
+            ...     orgn_tp="9000"  # 외국인
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10065",
+        }
+
+        data = {
+            "trde_tp": trde_tp,
+            "mrkt_tp": mrkt_tp,
+            "orgn_tp": orgn_tp,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+
+    def top_10_short_sale_stocks_request_ka10069(
+        self,
+        strt_dt: str,
+        mrkt_tp: str,
+        end_dt: str = "",
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """대차거래 상위 10종목을 조회합니다.
+
+        Args:
+            strt_dt (str): 시작일자 (YYYYMMDD 형식)
+            mrkt_tp (str): 시장구분
+                - 001: 코스피
+                - 101: 코스닥
+            end_dt (str, optional): 종료일자 (YYYYMMDD 형식). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 대차거래 상위 10종목 데이터
+                {
+                    "dbrt_trde_cntrcnt_sum": str,  # 대차거래체결주수합
+                    "dbrt_trde_rpy_sum": str,  # 대차거래상환주수합
+                    "rmnd_sum": str,  # 잔고주수합
+                    "remn_amt_sum": str,  # 잔고금액합
+                    "dbrt_trde_cntrcnt_rt": str,  # 대차거래체결주수비율
+                    "dbrt_trde_rpy_rt": str,  # 대차거래상환주수비율
+                    "rmnd_rt": str,  # 잔고주수비율
+                    "remn_amt_rt": str,  # 잔고금액비율
+                    "dbrt_trde_upper_10stk": [  # 대차거래상위10종목
+                        {
+                            "stk_nm": str,  # 종목명
+                            "stk_cd": str,  # 종목코드
+                            "dbrt_trde_cntrcnt": str,  # 대차거래체결주수
+                            "dbrt_trde_rpy": str,  # 대차거래상환주수
+                            "rmnd": str,  # 잔고주수
+                            "remn_amt": str,  # 잔고금액
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.top_10_short_sale_stocks_request_ka10069(
+            ...     strt_dt="20241110",
+            ...     mrkt_tp="001",  # 코스피
+            ...     end_dt="20241125"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10069",
+        }
+
+        data = {
+            "strt_dt": strt_dt,
+            "mrkt_tp": mrkt_tp,
+        }
+
+        # Optional parameter
+        if end_dt:
+            data["end_dt"] = end_dt
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def after_market_price_change_rate_ranking_request_ka10098(
+        self,
+        mrkt_tp: str,
+        sort_base: str,
+        stk_cnd: str,
+        trde_qty_cnd: str,
+        crd_cnd: str,
+        trde_prica: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """시간외 단일가 등락율 순위를 조회합니다.
+
+        Args:
+            mrkt_tp (str): 시장구분
+                - 000: 전체
+                - 001: 코스피
+                - 101: 코스닥
+            sort_base (str): 정렬기준
+                - 1: 상승률
+                - 2: 상승폭
+                - 3: 하락률
+                - 4: 하락폭
+                - 5: 보합
+            stk_cnd (str): 종목조건
+                - 0: 전체조회
+                - 1: 관리종목제외
+                - 2: 정리매매종목제외
+                - 3: 우선주제외
+                - 4: 관리종목우선주제외
+                - 5: 증100제외
+                - 6: 증100만보기
+                - 7: 증40만보기
+                - 8: 증30만보기
+                - 9: 증20만보기
+                - 12: 증50만보기
+                - 13: 증60만보기
+                - 14: ETF제외
+                - 15: 스팩제외
+                - 16: ETF+ETN제외
+                - 17: ETN제외
+            trde_qty_cnd (str): 거래량조건
+                - 0: 전체조회
+                - 10: 백주이상
+                - 50: 5백주이상
+                - 100: 천주이상
+                - 500: 5천주이상
+                - 1000: 만주이상
+                - 5000: 5만주이상
+                - 10000: 10만주이상
+            crd_cnd (str): 신용조건
+                - 0: 전체조회
+                - 9: 신용융자전체
+                - 1: 신용융자A군
+                - 2: 신용융자B군
+                - 3: 신용융자C군
+                - 4: 신용융자D군
+                - 8: 신용대주
+                - 5: 신용한도초과제외
+            trde_prica (str): 거래대금
+                - 0: 전체조회
+                - 5: 5백만원이상
+                - 10: 1천만원이상
+                - 30: 3천만원이상
+                - 50: 5천만원이상
+                - 100: 1억원이상
+                - 300: 3억원이상
+                - 500: 5억원이상
+                - 1000: 10억원이상
+                - 3000: 30억원이상
+                - 5000: 50억원이상
+                - 10000: 100억원이상
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 시간외 단일가 등락율 순위 데이터
+                {
+                    "ovt_sigpric_flu_rt_rank": [  # 시간외단일가등락율순위
+                        {
+                            "rank": str,  # 순위
+                            "stk_cd": str,  # 종목코드
+                            "stk_nm": str,  # 종목명
+                            "cur_prc": str,  # 현재가
+                            "pred_pre_sig": str,  # 전일대비기호
+                            "pred_pre": str,  # 전일대비
+                            "flu_rt": str,  # 등락률
+                            "sel_tot_req": str,  # 매도총잔량
+                            "buy_tot_req": str,  # 매수총잔량
+                            "acc_trde_qty": str,  # 누적거래량
+                            "acc_trde_prica": str,  # 누적거래대금
+                            "tdy_close_pric": str,  # 당일종가
+                            "tdy_close_pric_flu_rt": str,  # 당일종가등락률
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.after_market_price_change_rate_ranking_request_ka10098(
+            ...     mrkt_tp="000",  # 전체
+            ...     sort_base="5",  # 보합
+            ...     stk_cnd="0",  # 전체조회
+            ...     trde_qty_cnd="0",  # 전체조회
+            ...     crd_cnd="0",  # 전체조회
+            ...     trde_prica="0"  # 전체조회
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10098",
+        }
+
+        data = {
+            "mrkt_tp": mrkt_tp,
+            "sort_base": sort_base,
+            "stk_cnd": stk_cnd,
+            "trde_qty_cnd": trde_qty_cnd,
+            "crd_cnd": crd_cnd,
+            "trde_prica": trde_prica,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+
+    def top_foreign_institution_trades_request_ka90009(
+        self,
+        mrkt_tp: str,
+        amt_qty_tp: str,
+        qry_dt_tp: str,
+        stex_tp: str,
+        date: str = "",
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """외국인/기관 매매 상위 종목을 조회합니다.
+
+        Args:
+            mrkt_tp (str): 시장구분
+                - 000: 전체
+                - 001: 코스피
+                - 101: 코스닥
+            amt_qty_tp (str): 금액수량구분
+                - 1: 금액(천만)
+                - 2: 수량(천)
+            qry_dt_tp (str): 조회일자구분
+                - 0: 조회일자 미포함
+                - 1: 조회일자 포함
+            stex_tp (str): 거래소구분
+                - 1: KRX
+                - 2: NXT
+                - 3: 통합
+            date (str, optional): 날짜 (YYYYMMDD 형식). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 외국인/기관 매매 상위 종목 데이터
+                {
+                    "frgnr_orgn_trde_upper": [  # 외국인기관매매상위
+                        {
+                            "for_netslmt_stk_cd": str,  # 외인순매도종목코드
+                            "for_netslmt_stk_nm": str,  # 외인순매도종목명
+                            "for_netslmt_amt": str,  # 외인순매도금액
+                            "for_netslmt_qty": str,  # 외인순매도수량
+                            "for_netprps_stk_cd": str,  # 외인순매수종목코드
+                            "for_netprps_stk_nm": str,  # 외인순매수종목명
+                            "for_netprps_amt": str,  # 외인순매수금액
+                            "for_netprps_qty": str,  # 외인순매수수량
+                            "orgn_netslmt_stk_cd": str,  # 기관순매도종목코드
+                            "orgn_netslmt_stk_nm": str,  # 기관순매도종목명
+                            "orgn_netslmt_amt": str,  # 기관순매도금액
+                            "orgn_netslmt_qty": str,  # 기관순매도수량
+                            "orgn_netprps_stk_cd": str,  # 기관순매수종목코드
+                            "orgn_netprps_stk_nm": str,  # 기관순매수종목명
+                            "orgn_netprps_amt": str,  # 기관순매수금액
+                            "orgn_netprps_qty": str,  # 기관순매수수량
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.rank_info.top_foreign_institution_trades_request_ka90009(
+            ...     mrkt_tp="000",  # 전체
+            ...     amt_qty_tp="1",  # 금액(천만)
+            ...     qry_dt_tp="1",  # 조회일자 포함
+            ...     stex_tp="1",  # KRX
+            ...     date="20241101"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka90009",
+        }
+
+        data = {
+            "mrkt_tp": mrkt_tp,
+            "amt_qty_tp": amt_qty_tp,
+            "qry_dt_tp": qry_dt_tp,
+            "stex_tp": stex_tp,
+        }
+
+        # Optional parameter
+        if date:
+            data["date"] = date
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
