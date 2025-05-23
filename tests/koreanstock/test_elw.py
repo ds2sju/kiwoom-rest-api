@@ -34,10 +34,24 @@ try:
     print("\n\n test 실행")
     
     print_result("ka10048_result", elw.elw_daily_sensitivity_indicator_request_ka10048(
-        stk_cd="57JBHH"
+        stk_cd="57KBAW"
     ), print_result=False)
     
+    print_result("ka10050_result", elw.elw_sensitivity_indicator_request_ka10050(
+        stk_cd="57KBAW"
+    ), print_result=False)
     
+    print_result("ka30001_result", elw.elw_price_spike_request_ka30001(
+        flu_tp="1",  # 급등
+        tm_tp="2",  # 일전
+        tm="1",  # 1일
+        trde_qty_tp="0",  # 전체
+        isscomp_cd="000000000000",  # 전체
+        bsis_aset_cd="000000000000",  # 전체
+        rght_tp="000",  # 전체
+        lpcd="000000000000",  # 전체
+        trde_end_elwskip="0"  # 포함
+    ), print_result=False)
 
 except Exception as e:
     print("에러 발생:", str(e))
