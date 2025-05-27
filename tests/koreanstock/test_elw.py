@@ -17,7 +17,7 @@ token_manager = TokenManager()
 # StockInfo 인스턴스 생성 (base_url 수정)
 elw = ELW(base_url="https://api.kiwoom.com", token_manager=token_manager)
 
-def print_result(result_name, result, print_result):
+def print_result(result_name, result, print_result=True):
     if isinstance(result, dict):
         if str(result.get("return_code")) == "0":
             if print_result:
@@ -52,7 +52,30 @@ try:
         lpcd="000000000000",  # 전체
         trde_end_elwskip="0"  # 포함
     ), print_result=False)
+    
+    print_result("ka30002_result", elw.top_elw_net_buying_by_broker_request_ka30002(
+        isscomp_cd="003",  # 한국투자증권
+        trde_qty_tp="0",  # 전체
+        trde_tp="2",  # 순매도
+        dt="60",  # 60일
+        trde_end_elwskip="0"  # 포함
+    ), print_result=False)
+    
+    print_result("ka30003_result", elw.elw_lp_daily_holding_trend_request_ka30003(
+        bsis_aset_cd="000000000000",  # 기초자산코드
+        base_dt="20241122"  # 기준일자
+    ), print_result=False)
+    
+    print_result("ka30004_result", elw.elw_premium_rate_request_ka30004(
+        isscomp_cd="000000000000",  # 전체
+        bsis_aset_cd="000000000000",  # 전체
+        rght_tp="000",  # 전체
+        lpcd="000000000000",  # 전체
+        trde_end_elwskip="0"  # 거래종료ELW포함
+    ), print_result=False)
+    
 
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
