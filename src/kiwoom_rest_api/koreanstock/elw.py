@@ -599,3 +599,156 @@ class ELW(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def elw_condition_search_request_ka30005(
+        self,
+        isscomp_cd: str,
+        bsis_aset_cd: str,
+        rght_tp: str,
+        lpcd: str,
+        sort_tp: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """ELW 조건검색 정보를 조회합니다.
+
+        Args:
+            isscomp_cd (str): 발행사코드 (12자리)
+                - 000000000000: 전체
+                - 000000000003: 한국투자증권
+                - 000000000005: 미래대우
+                - 000000000006: 신영
+                - 000000000012: NK투자증권
+                - 000000000017: KB증권
+            bsis_aset_cd (str): 기초자산코드
+                - 000000000000: 전체
+                - 201: KOSPI200
+                - 150: KOSDAQ150
+                - 005930: 삼성전자
+                - 030200: KT
+            rght_tp (str): 권리구분
+                - 0: 전체
+                - 1: 콜
+                - 2: 풋
+                - 3: DC
+                - 4: DP
+                - 5: EX
+                - 6: 조기종료콜
+                - 7: 조기종료풋
+            lpcd (str): LP코드 (12자리)
+                - 000000000000: 전체
+                - 000000000003: 한국투자증권
+                - 000000000005: 미래대우
+                - 000000000006: 신영
+                - 000000000012: NK투자증권
+                - 000000000017: KB증권
+            sort_tp (str): 정렬구분
+                - 0: 정렬없음
+                - 1: 상승율순
+                - 2: 상승폭순
+                - 3: 하락율순
+                - 4: 하락폭순
+                - 5: 거래량순
+                - 6: 거래대금순
+                - 7: 잔존일순
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: ELW 조건검색 데이터
+                {
+                    "elwcnd_qry": [  # ELW조건검색
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "isscomp_nm": str,  # 발행사명
+                            "sqnc": str,  # 회차
+                            "base_aset_nm": str,  # 기초자산명
+                            "rght_tp": str,  # 권리구분
+                            "expr_dt": str,  # 만기일
+                            "cur_prc": str,  # 현재가
+                            "pre_tp": str,  # 대비구분
+                            "pred_pre": str,  # 전일대비
+                            "flu_rt": str,  # 등락율
+                            "trde_qty": str,  # 거래량
+                            "trde_qty_pre": str,  # 거래량대비
+                            "trde_prica": str,  # 거래대금
+                            "pred_trde_qty": str,  # 전일거래량
+                            "sel_bid": str,  # 매도호가
+                            "buy_bid": str,  # 매수호가
+                            "prty": str,  # 패리티
+                            "gear_rt": str,  # 기어링비율
+                            "pl_qutr_rt": str,  # 손익분기율
+                            "cfp": str,  # 자본지지점
+                            "theory_pric": str,  # 이론가
+                            "innr_vltl": str,  # 내재변동성
+                            "delta": str,  # 델타
+                            "lvrg": str,  # 레버리지
+                            "exec_pric": str,  # 행사가격
+                            "cnvt_rt": str,  # 전환비율
+                            "lpposs_rt": str,  # LP보유비율
+                            "pl_qutr_pt": str,  # 손익분기점
+                            "fin_trde_dt": str,  # 최종거래일
+                            "flo_dt": str,  # 상장일
+                            "lpinitlast_suply_dt": str,  # LP초종공급일
+                            "stk_nm": str,  # 종목명
+                            "srvive_dys": str,  # 잔존일수
+                            "dispty_rt": str,  # 괴리율
+                            "lpmmcm_nm": str,  # LP회원사명
+                            "lpmmcm_nm_1": str,  # LP회원사명1
+                            "lpmmcm_nm_2": str,  # LP회원사명2
+                            "xraymont_cntr_qty_arng_trde_tp": str,  # Xray순간체결량정리매매구분
+                            "xraymont_cntr_qty_profa_100tp": str,  # Xray순간체결량증거금100구분
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Raises:
+            ValueError: 필수 파라미터가 누락되었거나 유효하지 않은 경우
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.elw.elw_condition_search_request_ka30005(
+            ...     isscomp_cd="000000000017",  # KB증권
+            ...     bsis_aset_cd="201",  # KOSPI200
+            ...     rght_tp="1",  # 콜
+            ...     lpcd="000000000000",  # 전체
+            ...     sort_tp="0"  # 정렬없음
+            ... )
+        """
+        # 파라미터 유효성 검증
+        if not isscomp_cd.isdigit() or len(isscomp_cd) != 12:
+            raise ValueError("isscomp_cd must be a 12-digit number")
+        if not bsis_aset_cd.isdigit():
+            raise ValueError("bsis_aset_cd must be a number")
+        if bsis_aset_cd == "000000000000" and len(bsis_aset_cd) != 12:
+            raise ValueError("bsis_aset_cd must be 12 digits when '000000000000'")
+        if rght_tp not in ["0", "1", "2", "3", "4", "5", "6", "7"]:
+            raise ValueError("Invalid rght_tp value")
+        if not lpcd.isdigit() or len(lpcd) != 12:
+            raise ValueError("lpcd must be a 12-digit number")
+        if sort_tp not in ["0", "1", "2", "3", "4", "5", "6", "7"]:
+            raise ValueError("Invalid sort_tp value")
+
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka30005",
+        }
+
+        data = {
+            "isscomp_cd": isscomp_cd,
+            "bsis_aset_cd": bsis_aset_cd,
+            "rght_tp": rght_tp,
+            "lpcd": lpcd,
+            "sort_tp": sort_tp,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

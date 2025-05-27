@@ -74,7 +74,13 @@ try:
         trde_end_elwskip="0"  # 거래종료ELW포함
     ), print_result=False)
     
-
+    print_result("ka30005_result", elw.elw_condition_search_request_ka30005(
+        isscomp_cd="000000000017",  # KB증권
+        bsis_aset_cd="201",  # KOSPI200
+        rght_tp="1",  # 콜
+        lpcd="000000000000",  # 전체
+        sort_tp="0"  # 정렬없음
+    ), print_result=False)
     
 except Exception as e:
     print("에러 발생:", str(e))
