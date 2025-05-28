@@ -752,3 +752,362 @@ class ELW(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def elw_price_change_rate_ranking_request_ka30009(
+        self,
+        sort_tp: str,
+        rght_tp: str,
+        trde_end_skip: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """ELW 등락율 순위 정보를 조회합니다.
+
+        Args:
+            sort_tp (str): 정렬구분
+                - 1: 상승률
+                - 2: 상승폭
+                - 3: 하락률
+                - 4: 하락폭
+            rght_tp (str): 권리구분 (3자리)
+                - 000: 전체
+                - 001: 콜
+                - 002: 풋
+                - 003: DC
+                - 004: DP
+                - 006: 조기종료콜
+                - 007: 조기종료풋
+            trde_end_skip (str): 거래종료제외
+                - 0: 거래종료포함
+                - 1: 거래종료제외
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: ELW 등락율 순위 데이터
+                {
+                    "elwflu_rt_rank": [  # ELW등락율순위
+                        {
+                            "rank": str,  # 순위
+                            "stk_cd": str,  # 종목코드
+                            "stk_nm": str,  # 종목명
+                            "cur_prc": str,  # 현재가
+                            "pre_sig": str,  # 대비기호
+                            "pred_pre": str,  # 전일대비
+                            "flu_rt": str,  # 등락률
+                            "sel_req": str,  # 매도잔량
+                            "buy_req": str,  # 매수잔량
+                            "trde_qty": str,  # 거래량
+                            "trde_prica": str,  # 거래대금
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Raises:
+            ValueError: 필수 파라미터가 누락되었거나 유효하지 않은 경우
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.elw.elw_price_change_rate_ranking_request_ka30009(
+            ...     sort_tp="1",  # 상승률
+            ...     rght_tp="000",  # 전체
+            ...     trde_end_skip="0"  # 거래종료포함
+            ... )
+        """
+        # 파라미터 유효성 검증
+        if sort_tp not in ["1", "2", "3", "4"]:
+            raise ValueError("sort_tp must be one of: '1' (상승률), '2' (상승폭), '3' (하락률), '4' (하락폭)")
+        if rght_tp not in ["000", "001", "002", "003", "004", "006", "007"]:
+            raise ValueError("Invalid rght_tp value")
+        if trde_end_skip not in ["0", "1"]:
+            raise ValueError("trde_end_skip must be '0' (포함) or '1' (제외)")
+
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka30009",
+        }
+
+        data = {
+            "sort_tp": sort_tp,
+            "rght_tp": rght_tp,
+            "trde_end_skip": trde_end_skip,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def elw_order_volume_ranking_request_ka30010(
+        self,
+        sort_tp: str,
+        rght_tp: str,
+        trde_end_skip: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """ELW 잔량 순위 정보를 조회합니다.
+
+        Args:
+            sort_tp (str): 정렬구분
+                - 1: 순매수잔량상위
+                - 2: 순매도잔량상위
+            rght_tp (str): 권리구분 (3자리)
+                - 000: 전체
+                - 001: 콜
+                - 002: 풋
+                - 003: DC
+                - 004: DP
+                - 006: 조기종료콜
+                - 007: 조기종료풋
+            trde_end_skip (str): 거래종료제외
+                - 0: 거래종료포함
+                - 1: 거래종료제외
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: ELW 잔량 순위 데이터
+                {
+                    "elwreq_rank": [  # ELW잔량순위
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "rank": str,  # 순위
+                            "stk_nm": str,  # 종목명
+                            "cur_prc": str,  # 현재가
+                            "pre_sig": str,  # 대비기호
+                            "pred_pre": str,  # 전일대비
+                            "flu_rt": str,  # 등락률
+                            "trde_qty": str,  # 거래량
+                            "sel_req": str,  # 매도잔량
+                            "buy_req": str,  # 매수잔량
+                            "netprps_req": str,  # 순매수잔량
+                            "trde_prica": str,  # 거래대금
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Raises:
+            ValueError: 필수 파라미터가 누락되었거나 유효하지 않은 경우
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.elw.elw_order_volume_ranking_request_ka30010(
+            ...     sort_tp="1",  # 순매수잔량상위
+            ...     rght_tp="000",  # 전체
+            ...     trde_end_skip="0"  # 거래종료포함
+            ... )
+        """
+        # 파라미터 유효성 검증
+        if sort_tp not in ["1", "2"]:
+            raise ValueError("sort_tp must be '1' (순매수잔량상위) or '2' (순매도잔량상위)")
+        if rght_tp not in ["000", "001", "002", "003", "004", "006", "007"]:
+            raise ValueError("Invalid rght_tp value")
+        if trde_end_skip not in ["0", "1"]:
+            raise ValueError("trde_end_skip must be '0' (포함) or '1' (제외)")
+
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka30010",
+        }
+
+        data = {
+            "sort_tp": sort_tp,
+            "rght_tp": rght_tp,
+            "trde_end_skip": trde_end_skip,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def elw_proximity_rate_request_ka30011(
+        self,
+        stk_cd: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """ELW 근접율 정보를 조회합니다.
+
+        Args:
+            stk_cd (str): 종목코드 (6자리)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: ELW 근접율 데이터
+                {
+                    "elwalacc_rt": [  # ELW근접율
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "stk_nm": str,  # 종목명
+                            "cur_prc": str,  # 현재가
+                            "pre_sig": str,  # 대비기호
+                            "pred_pre": str,  # 전일대비
+                            "flu_rt": str,  # 등락율
+                            "acc_trde_qty": str,  # 누적거래량
+                            "alacc_rt": str,  # 근접율
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Raises:
+            ValueError: 필수 파라미터가 누락되었거나 유효하지 않은 경우
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.elw.elw_proximity_rate_request_ka30011(
+            ...     stk_cd="57JBHH"  # 종목코드
+            ... )
+        """
+        # 파라미터 유효성 검증
+        if not stk_cd or len(stk_cd) != 6:
+            raise ValueError("stk_cd must be a 6-character string")
+
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka30011",
+        }
+
+        data = {
+            "stk_cd": stk_cd,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def elw_detailed_stock_info_request_ka30012(
+        self,
+        stk_cd: str,
+        cont_yn: str = "N",
+        next_key: str = "",
+    ) -> dict:
+        """ELW 종목 상세 정보를 조회합니다.
+
+        Args:
+            stk_cd (str): 종목코드 (6자리)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: ELW 종목 상세 데이터
+                {
+                    "aset_cd": str,  # 자산코드
+                    "cur_prc": str,  # 현재가
+                    "pred_pre_sig": str,  # 전일대비기호
+                    "pred_pre": str,  # 전일대비
+                    "flu_rt": str,  # 등락율
+                    "lpmmcm_nm": str,  # LP회원사명
+                    "lpmmcm_nm_1": str,  # LP회원사명1
+                    "lpmmcm_nm_2": str,  # LP회원사명2
+                    "elwrght_cntn": str,  # ELW권리내용
+                    "elwexpr_evlt_pric": str,  # ELW만기평가가격
+                    "elwtheory_pric": str,  # ELW이론가
+                    "dispty_rt": str,  # 괴리율
+                    "elwinnr_vltl": str,  # ELW내재변동성
+                    "exp_rght_pric": str,  # 예상권리가
+                    "elwpl_qutr_rt": str,  # ELW손익분기율
+                    "elwexec_pric": str,  # ELW행사가
+                    "elwcnvt_rt": str,  # ELW전환비율
+                    "elwcmpn_rt": str,  # ELW보상율
+                    "elwpric_rising_part_rt": str,  # ELW가격상승참여율
+                    "elwrght_type": str,  # ELW권리유형
+                    "elwsrvive_dys": str,  # ELW잔존일수
+                    "stkcnt": str,  # 주식수
+                    "elwlpord_pos": str,  # ELWLP주문가능
+                    "lpposs_rt": str,  # LP보유비율
+                    "lprmnd_qty": str,  # LP보유수량
+                    "elwspread": str,  # ELW스프레드
+                    "elwprty": str,  # ELW패리티
+                    "elwgear": str,  # ELW기어링
+                    "elwflo_dt": str,  # ELW상장일
+                    "elwfin_trde_dt": str,  # ELW최종거래일
+                    "expr_dt": str,  # 만기일
+                    "exec_dt": str,  # 행사일
+                    "lpsuply_end_dt": str,  # LP공급종료일
+                    "elwpay_dt": str,  # ELW지급일
+                    "elwinvt_ix_comput": str,  # ELW투자지표산출
+                    "elwpay_agnt": str,  # ELW지급대리인
+                    "elwappr_way": str,  # ELW결재방법
+                    "elwrght_exec_way": str,  # ELW권리행사방식
+                    "elwpblicte_orgn": str,  # ELW발행기관
+                    "dcsn_pay_amt": str,  # 확정지급액
+                    "kobarr": str,  # KO베리어
+                    "iv": str,  # IV
+                    "clsprd_end_elwocr": str,  # 종기종료ELW발생
+                    "bsis_aset_1": str,  # 기초자산1
+                    "bsis_aset_comp_rt_1": str,  # 기초자산구성비율1
+                    "bsis_aset_2": str,  # 기초자산2
+                    "bsis_aset_comp_rt_2": str,  # 기초자산구성비율2
+                    "bsis_aset_3": str,  # 기초자산3
+                    "bsis_aset_comp_rt_3": str,  # 기초자산구성비율3
+                    "bsis_aset_4": str,  # 기초자산4
+                    "bsis_aset_comp_rt_4": str,  # 기초자산구성비율4
+                    "bsis_aset_5": str,  # 기초자산5
+                    "bsis_aset_comp_rt_5": str,  # 기초자산구성비율5
+                    "fr_dt": str,  # 평가시작일자
+                    "to_dt": str,  # 평가종료일자
+                    "fr_tm": str,  # 평가시작시간
+                    "evlt_end_tm": str,  # 평가종료시간
+                    "evlt_pric": str,  # 평가가격
+                    "evlt_fnsh_yn": str,  # 평가완료여부
+                    "all_hgst_pric": str,  # 전체최고가
+                    "all_lwst_pric": str,  # 전체최저가
+                    "imaf_hgst_pric": str,  # 직후최고가
+                    "imaf_lwst_pric": str,  # 직후최저가
+                    "sndhalf_mrkt_hgst_pric": str,  # 후반장최고가
+                    "sndhalf_mrkt_lwst_pric": str,  # 후반장최저가
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Raises:
+            ValueError: 필수 파라미터가 누락되었거나 유효하지 않은 경우
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.elw.elw_detailed_stock_info_request_ka30012(
+            ...     stk_cd="57JBHH"  # 종목코드
+            ... )
+        """
+        # 파라미터 유효성 검증
+        if not stk_cd or len(stk_cd) != 6:
+            raise ValueError("stk_cd must be a 6-character string")
+
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka30012",
+        }
+
+        data = {
+            "stk_cd": stk_cd,
+        }
+
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

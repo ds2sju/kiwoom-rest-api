@@ -82,6 +82,26 @@ try:
         sort_tp="0"  # 정렬없음
     ), print_result=False)
     
+    print_result("ka30009_result", elw.elw_price_change_rate_ranking_request_ka30009(
+        sort_tp="1",  # 상승률
+        rght_tp="000",  # 전체
+        trde_end_skip="0"  # 거래종료포함
+    ), print_result=False)
+    
+    print_result("ka30010_result", elw.elw_order_volume_ranking_request_ka30010(
+        sort_tp="1",  # 순매수잔량상위
+        rght_tp="000",  # 전체
+        trde_end_skip="0"  # 거래종료포함
+    ), print_result=False)
+    
+    print_result("ka30011_result", elw.elw_proximity_rate_request_ka30011(
+        stk_cd="57JBHH"  # 종목코드
+    ), print_result=False)
+    
+    print_result("ka30012_result", elw.elw_detailed_stock_info_request_ka30012(
+        stk_cd="57JBHH"  # 종목코드
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
