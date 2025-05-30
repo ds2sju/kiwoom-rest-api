@@ -53,6 +53,12 @@ try:
         tic_scope="1",    # 틱범위 (1:1틱)
         upd_stkpc_tp="1"  # 수정주가구분
     ), print_result=False)
+    
+    print_result("ka10080_result", chart.stock_minute_chart_request_ka10080(
+        stk_cd="005930",  # 종목코드
+        tic_scope="1",    # 틱범위 (1:1틱)
+        upd_stkpc_tp="1"  # 수정주가구분
+    ), print_result=False)
 
 except Exception as e:
     print("에러 발생:", str(e))

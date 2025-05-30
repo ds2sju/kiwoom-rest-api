@@ -145,3 +145,55 @@ class Chart(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def stock_minute_chart_request_ka10080(
+        self,
+        stk_cd: str,
+        tic_scope: str,
+        upd_stkpc_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        주식분봉차트조회요청 (ka10080)
+
+        Args:
+            stk_cd (str): 종목코드 (거래소별 종목코드 KRX:039490,NXT:039490_NX,SOR:039490_AL)
+            tic_scope (str): 틱범위 (1:1분, 3:3분, 5:5분, 10:10분, 15:15분, 30:30분, 45:45분, 60:60분)
+            upd_stkpc_tp (str): 수정주가구분 (0 or 1)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 주식분봉차트 데이터
+                - stk_cd (str): 종목코드
+                - stk_min_pole_chart_qry (list): 주식분봉차트조회 데이터 리스트
+                    - cur_prc (str): 현재가
+                    - trde_qty (str): 거래량
+                    - cntr_tm (str): 체결시간
+                    - open_pric (str): 시가
+                    - high_pric (str): 고가
+                    - low_pric (str): 저가
+                    - upd_stkpc_tp (str): 수정주가구분
+                    - upd_rt (str): 수정비율
+                    - bic_inds_tp (str): 대업종구분
+                    - sm_inds_tp (str): 소업종구분
+                    - stk_infr (str): 종목정보
+                    - upd_stkpc_event (str): 수정주가이벤트
+                    - pred_close_pric (str): 전일종가
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10080",
+        }
+        data = {
+            "stk_cd": stk_cd,
+            "tic_scope": tic_scope,
+            "upd_stkpc_tp": upd_stkpc_tp,
+        }
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
