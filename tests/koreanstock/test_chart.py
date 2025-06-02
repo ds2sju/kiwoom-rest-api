@@ -60,6 +60,12 @@ try:
         upd_stkpc_tp="1"  # 수정주가구분
     ), print_result=False)
 
+    print_result("ka10081_result", chart.stock_daily_chart_request_ka10081(
+        stk_cd="005930",  # 종목코드
+        base_dt="20241107",  # 일자 YYYYMMDD
+        upd_stkpc_tp="1"  # 수정주가구분
+    ), print_result=False)
+
 except Exception as e:
     print("에러 발생:", str(e))
 

@@ -197,3 +197,56 @@ class Chart(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def stock_daily_chart_request_ka10081(
+        self,
+        stk_cd: str,
+        base_dt: str,
+        upd_stkpc_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        주식일봉차트조회요청 (ka10081)
+
+        Args:
+            stk_cd (str): 종목코드 (거래소별 종목코드 KRX:039490,NXT:039490_NX,SOR:039490_AL)
+            base_dt (str): 기준일자 (YYYYMMDD)
+            upd_stkpc_tp (str): 수정주가구분 (0 or 1)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 주식일봉차트 데이터
+                - stk_cd (str): 종목코드
+                - stk_dt_pole_chart_qry (list): 주식일봉차트조회 데이터 리스트
+                    - cur_prc (str): 현재가
+                    - trde_qty (str): 거래량
+                    - trde_prica (str): 거래대금
+                    - dt (str): 일자
+                    - open_pric (str): 시가
+                    - high_pric (str): 고가
+                    - low_pric (str): 저가
+                    - upd_stkpc_tp (str): 수정주가구분
+                    - upd_rt (str): 수정비율
+                    - bic_inds_tp (str): 대업종구분
+                    - sm_inds_tp (str): 소업종구분
+                    - stk_infr (str): 종목정보
+                    - upd_stkpc_event (str): 수정주가이벤트
+                    - pred_close_pric (str): 전일종가
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10081",
+        }
+        data = {
+            "stk_cd": stk_cd,
+            "base_dt": base_dt,
+            "upd_stkpc_tp": upd_stkpc_tp,
+        }
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
