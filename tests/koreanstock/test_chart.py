@@ -66,6 +66,54 @@ try:
         upd_stkpc_tp="1"  # 수정주가구분
     ), print_result=False)
 
+    print_result("ka10082_result", chart.stock_weekly_chart_request_ka10082(
+        stk_cd="005930",  # 종목코드
+        base_dt="20241108",  # 일자 YYYYMMDD
+        upd_stkpc_tp="1"  # 수정주가구분
+    ), print_result=False)
+
+    print_result("ka10083_result", chart.stock_monthly_chart_request_ka10083(
+        stk_cd="005930",  # 종목코드
+        base_dt="20241108",  # 일자 YYYYMMDD
+        upd_stkpc_tp="1"  # 수정주가구분
+    ), print_result=False)
+
+    print_result("ka10094_result", chart.stock_yearly_chart_request_ka10094(
+        stk_cd="005930",  # 종목코드
+        base_dt="20241212",  # 일자 YYYYMMDD
+        upd_stkpc_tp="1"  # 수정주가구분
+    ), print_result=False)
+
+    print_result("ka20004_result", chart.industry_tick_chart_request_ka20004(
+        inds_cd="001",  # 업종코드 (001:종합(KOSPI))
+        tic_scope="1"   # 틱범위 (1:1틱)
+    ), print_result=False)
+
+    print_result("ka20005_result", chart.industry_minute_chart_request_ka20005(
+        inds_cd="001",  # 업종코드 (001:종합(KOSPI))
+        tic_scope="5"   # 틱범위 (5:5분)
+    ), print_result=False)
+
+    print_result("ka20006_result", chart.industry_daily_chart_request_ka20006(
+        inds_cd="001",  # 업종코드 (001:종합(KOSPI))
+        base_dt="20241122"  # 기준일자 YYYYMMDD
+    ), print_result=False)
+
+    print_result("ka20007_result", chart.industry_weekly_chart_request_ka20007(
+        inds_cd="001",  # 업종코드 (001:종합(KOSPI))
+        base_dt="20241122"  # 기준일자 YYYYMMDD
+    ), print_result=False)
+
+    print_result("ka20008_result", chart.industry_monthly_chart_request_ka20008(
+        inds_cd="001",  # 업종코드 (001:종합(KOSPI))
+        base_dt="20241122"  # 기준일자 YYYYMMDD
+    ), print_result=False)
+
+    print_result("ka20019_result", chart.industry_yearly_chart_request_ka20019(
+        inds_cd="001",  # 업종코드 (001:종합(KOSPI))
+        base_dt="20241122"  # 기준일자 YYYYMMDD
+    ), print_result=False)
+
 except Exception as e:
     print("에러 발생:", str(e))
 
