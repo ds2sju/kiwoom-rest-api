@@ -48,6 +48,24 @@ try:
         start_date="20240301",
         end_date="20240331"
     ), print_result=False)
+    
+    print_result("ka10075_result", account.unfilled_orders_request_ka10075(
+        all_stk_tp="1",
+        trde_tp="0",
+        stex_tp="0",
+        stock_code="005930"
+    ), print_result=False)
+    
+    print_result("ka10076_result", account.filled_orders_request_ka10076(
+        qry_tp="1",
+        sell_tp="0",
+        stex_tp="0",
+        stock_code="005930"
+    ), print_result=False)
+    
+    
+    
+    
 
 except Exception as e:
     print("에러 발생:", str(e))
