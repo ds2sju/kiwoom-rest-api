@@ -63,10 +63,14 @@ try:
         stock_code="005930"
     ), print_result=False)
     
+    print_result("ka10077_result", account.today_realized_profit_detail_request_ka10077(
+        stock_code="005930"
+    ), print_result=False)
     
+    print_result("ka10085_result", account.account_return_rate_request_ka10085(
+        stex_tp="0"  # 통합 거래소
+    ), print_result=False)
     
-    
-
 except Exception as e:
     print("에러 발생:", str(e))
 

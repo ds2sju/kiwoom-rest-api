@@ -402,4 +402,127 @@ class Account(KiwoomBaseAPI):
             headers=headers,
         )
         
-    
+    def today_realized_profit_detail_request_ka10077(
+        self,
+        stock_code: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        당일실현손익상세요청 (ka10077)
+
+        Args:
+            stock_code (str): 종목코드 (6자리)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 당일실현손익 상세 데이터
+                {
+                    "tdy_rlzt_pl": str,  # 당일실현손익
+                    "tdy_rlzt_pl_dtl": [
+                        {
+                            "stk_nm": str,  # 종목명
+                            "cntr_qty": str,  # 체결량
+                            "buy_uv": str,  # 매입단가
+                            "cntr_pric": str,  # 체결가
+                            "tdy_sel_pl": str,  # 당일매도손익
+                            "pl_rt": str,  # 손익율
+                            "tdy_trde_cmsn": str,  # 당일매매수수료
+                            "tdy_trde_tax": str,  # 당일매매세금
+                            "stk_cd": str,  # 종목코드
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.today_realized_profit_detail_request_ka10077(
+            ...     stock_code="005930"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10077",
+        }
+        data = {
+            "stk_cd": stock_code,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def account_return_rate_request_ka10085(
+        self,
+        stex_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        계좌수익률요청 (ka10085)
+
+        Args:
+            stex_tp (str): 거래소구분 (0:통합, 1:KRX, 2:NXT)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 계좌수익률 데이터
+                {
+                    "acnt_prft_rt": [
+                        {
+                            "dt": str,  # 일자
+                            "stk_cd": str,  # 종목코드
+                            "stk_nm": str,  # 종목명
+                            "cur_prc": str,  # 현재가
+                            "pur_pric": str,  # 매입가
+                            "pur_amt": str,  # 매입금액
+                            "rmnd_qty": str,  # 보유수량
+                            "tdy_sel_pl": str,  # 당일매도손익
+                            "tdy_trde_cmsn": str,  # 당일매매수수료
+                            "tdy_trde_tax": str,  # 당일매매세금
+                            "crd_tp": str,  # 신용구분
+                            "loan_dt": str,  # 대출일
+                            "setl_remn": str,  # 결제잔고
+                            "clrn_alow_qty": str,  # 청산가능수량
+                            "crd_amt": str,  # 신용금액
+                            "crd_int": str,  # 신용이자
+                            "expr_dt": str,  # 만기일
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.account_return_rate_request_ka10085(
+            ...     stex_tp="0"  # 통합 거래소
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10085",
+        }
+        data = {
+            "stex_tp": stex_tp,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
