@@ -71,6 +71,10 @@ try:
         stex_tp="0"  # 통합 거래소
     ), print_result=False)
     
+    print_result("ka10088_result", account.unfilled_split_order_detail_request_ka10088(
+        order_no="8"
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 

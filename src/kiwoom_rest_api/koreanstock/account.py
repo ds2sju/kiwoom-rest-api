@@ -526,3 +526,67 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def unfilled_split_order_detail_request_ka10088(
+        self,
+        order_no: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        미체결 분할주문 상세 요청 (ka10088)
+
+        Args:
+            order_no (str): 주문번호 (20자리)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 미체결 분할주문 상세 데이터
+                {
+                    "osop": [
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "acnt_no": str,  # 계좌번호
+                            "stk_nm": str,  # 종목명
+                            "ord_no": str,  # 주문번호
+                            "ord_qty": str,  # 주문수량
+                            "ord_pric": str,  # 주문가격
+                            "osop_qty": str,  # 미체결수량
+                            "io_tp_nm": str,  # 주문구분
+                            "trde_tp": str,  # 매매구분
+                            "sell_tp": str,  # 매도/수 구분
+                            "cntr_qty": str,  # 체결량
+                            "ord_stt": str,  # 주문상태
+                            "cur_prc": str,  # 현재가
+                            "stex_tp": str,  # 거래소구분 (0:통합, 1:KRX, 2:NXT)
+                            "stex_tp_txt": str,  # 거래소구분텍스트 (통합,KRX,NXT)
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.unfilled_split_order_detail_request_ka10088(
+            ...     order_no="8"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10088",
+        }
+        data = {
+            "ord_no": order_no,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
