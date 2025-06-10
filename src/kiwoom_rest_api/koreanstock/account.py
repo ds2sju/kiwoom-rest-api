@@ -590,3 +590,271 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def today_trading_journal_request_ka10170(
+        self,
+        ottks_tp: str,
+        ch_crd_tp: str,
+        base_dt: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        당일매매일지 요청 (ka10170)
+
+        Args:
+            ottks_tp (str): 단주구분 (1:당일매수에 대한 당일매도, 2:당일매도 전체)
+            ch_crd_tp (str): 현금신용구분 (0:전체, 1:현금매매만, 2:신용매매만)
+            base_dt (str, optional): 기준일자 (YYYYMMDD). 공백입력시 금일데이터, 최근 2개월까지 제공. Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 당일매매일지 데이터
+                {
+                    "tot_sell_amt": str,  # 총매도금액
+                    "tot_buy_amt": str,  # 총매수금액
+                    "tot_cmsn_tax": str,  # 총수수료_세금
+                    "tot_exct_amt": str,  # 총정산금액
+                    "tot_pl_amt": str,  # 총손익금액
+                    "tot_prft_rt": str,  # 총수익률
+                    "tdy_trde_diary": [  # 당일매매일지
+                        {
+                            "stk_nm": str,  # 종목명
+                            "buy_avg_pric": str,  # 매수평균가
+                            "buy_qty": str,  # 매수수량
+                            "sel_avg_pric": str,  # 매도평균가
+                            "sell_qty": str,  # 매도수량
+                            "cmsn_alm_tax": str,  # 수수료_제세금
+                            "pl_amt": str,  # 손익금액
+                            "sell_amt": str,  # 매도금액
+                            "buy_amt": str,  # 매수금액
+                            "prft_rt": str,  # 수익률
+                            "stk_cd": str,  # 종목코드
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.today_trading_journal_request_ka10170(
+            ...     ottks_tp="1",
+            ...     ch_crd_tp="0",
+            ...     base_dt="20241120"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "ka10170",
+        }
+        data = {
+            "ottks_tp": ottks_tp,
+            "ch_crd_tp": ch_crd_tp,
+        }
+        if base_dt:
+            data["base_dt"] = base_dt
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+    
+    def deposit_detail_status_request_kt00001(
+        self,
+        qry_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        예수금상세현황 요청 (kt00001)
+
+        Args:
+            qry_tp (str): 조회구분 (3:추정조회, 2:일반조회)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 예수금상세현황 데이터
+                {
+                    "entr": str,  # 예수금
+                    "profa_ch": str,  # 주식증거금현금
+                    "bncr_profa_ch": str,  # 수익증권증거금현금
+                    "nxdy_bncr_sell_exct": str,  # 익일수익증권매도정산대금
+                    "fc_stk_krw_repl_set_amt": str,  # 해외주식원화대용설정금
+                    "crd_grnta_ch": str,  # 신용보증금현금
+                    "crd_grnt_ch": str,  # 신용담보금현금
+                    "add_grnt_ch": str,  # 추가담보금현금
+                    "etc_profa": str,  # 기타증거금
+                    "uncl_stk_amt": str,  # 미수확보금
+                    "shrts_prica": str,  # 공매도대금
+                    "crd_set_grnta": str,  # 신용설정평가금
+                    "chck_ina_amt": str,  # 수표입금액
+                    "etc_chck_ina_amt": str,  # 기타수표입금액
+                    "crd_grnt_ruse": str,  # 신용담보재사용
+                    "knx_asset_evltv": str,  # 코넥스기본예탁금
+                    "elwdpst_evlta": str,  # ELW예탁평가금
+                    "crd_ls_rght_frcs_amt": str,  # 신용대주권리예정금액
+                    "lvlh_join_amt": str,  # 생계형가입금액
+                    "lvlh_trns_alowa": str,  # 생계형입금가능금액
+                    "repl_amt": str,  # 대용금평가금액(합계)
+                    "remn_repl_evlta": str,  # 잔고대용평가금액
+                    "trst_remn_repl_evlta": str,  # 위탁대용잔고평가금액
+                    "bncr_remn_repl_evlta": str,  # 수익증권대용평가금액
+                    "profa_repl": str,  # 위탁증거금대용
+                    "crd_grnta_repl": str,  # 신용보증금대용
+                    "crd_grnt_repl": str,  # 신용담보금대용
+                    "add_grnt_repl": str,  # 추가담보금대용
+                    "rght_repl_amt": str,  # 권리대용금
+                    "pymn_alow_amt": str,  # 출금가능금액
+                    "wrap_pymn_alow_amt": str,  # 랩출금가능금액
+                    "ord_alow_amt": str,  # 주문가능금액
+                    "bncr_buy_alowa": str,  # 수익증권매수가능금액
+                    "20stk_ord_alow_amt": str,  # 20%종목주문가능금액
+                    "30stk_ord_alow_amt": str,  # 30%종목주문가능금액
+                    "40stk_ord_alow_amt": str,  # 40%종목주문가능금액
+                    "100stk_ord_alow_amt": str,  # 100%종목주문가능금액
+                    "ch_uncla": str,  # 현금미수금
+                    "ch_uncla_dlfe": str,  # 현금미수연체료
+                    "ch_uncla_tot": str,  # 현금미수금합계
+                    "crd_int_npay": str,  # 신용이자미납
+                    "int_npay_amt_dlfe": str,  # 신용이자미납연체료
+                    "int_npay_amt_tot": str,  # 신용이자미납합계
+                    "etc_loana": str,  # 기타대여금
+                    "etc_loana_dlfe": str,  # 기타대여금연체료
+                    "etc_loan_tot": str,  # 기타대여금합계
+                    "nrpy_loan": str,  # 미상환융자금
+                    "loan_sum": str,  # 융자금합계
+                    "ls_sum": str,  # 대주금합계
+                    "crd_grnt_rt": str,  # 신용담보비율
+                    "mdstrm_usfe": str,  # 중도이용료
+                    "min_ord_alow_yn": str,  # 최소주문가능금액
+                    "loan_remn_evlt_amt": str,  # 대출총평가금액
+                    "dpst_grntl_remn": str,  # 예탁담보대출잔고
+                    "sell_grntl_remn": str,  # 매도담보대출잔고
+                    "d1_entra": str,  # d+1추정예수금
+                    "d1_slby_exct_amt": str,  # d+1매도매수정산금
+                    "d1_buy_exct_amt": str,  # d+1매수정산금
+                    "d1_out_rep_mor": str,  # d+1미수변제소요금
+                    "d1_sel_exct_amt": str,  # d+1매도정산금
+                    "d1_pymn_alow_amt": str,  # d+1출금가능금액
+                    "d2_entra": str,  # d+2추정예수금
+                    "d2_slby_exct_amt": str,  # d+2매도매수정산금
+                    "d2_buy_exct_amt": str,  # d+2매수정산금
+                    "d2_out_rep_mor": str,  # d+2미수변제소요금
+                    "d2_sel_exct_amt": str,  # d+2매도정산금
+                    "d2_pymn_alow_amt": str,  # d+2출금가능금액
+                    "50stk_ord_alow_amt": str,  # 50%종목주문가능금액
+                    "60stk_ord_alow_amt": str,  # 60%종목주문가능금액
+                    "stk_entr_prst": [  # 종목별예수금
+                        {
+                            "crnc_cd": str,  # 통화코드
+                            "fx_entr": str,  # 외화예수금
+                            "fc_krw_repl_evlta": str,  # 원화대용평가금
+                            "fc_trst_profa": str,  # 해외주식증거금
+                            "pymn_alow_amt": str,  # 출금가능금액
+                            "pymn_alow_amt_entr": str,  # 출금가능금액(예수금)
+                            "ord_alow_amt_entr": str,  # 주문가능금액(예수금)
+                            "fc_uncla": str,  # 외화미수(합계)
+                            "fc_ch_uncla": str,  # 외화현금미수금
+                            "dly_amt": str,  # 연체료
+                            "d1_fx_entr": str,  # d+1외화예수금
+                            "d2_fx_entr": str,  # d+2외화예수금
+                            "d3_fx_entr": str,  # d+3외화예수금
+                            "d4_fx_entr": str,  # d+4외화예수금
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.deposit_detail_status_request_kt00001(
+            ...     qry_tp="3"  # 추정조회
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00001",
+        }
+        data = {
+            "qry_tp": qry_tp,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def daily_estimated_deposit_asset_status_request_kt00002(
+        self,
+        start_dt: str,
+        end_dt: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        일별추정예탁자산현황 요청 (kt00002)
+
+        Args:
+            start_dt (str): 시작조회기간 (YYYYMMDD)
+            end_dt (str): 종료조회기간 (YYYYMMDD)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 일별추정예탁자산현황 데이터
+                {
+                    "daly_prsm_dpst_aset_amt_prst": [  # 일별추정예탁자산현황
+                        {
+                            "dt": str,  # 일자
+                            "entr": str,  # 예수금
+                            "grnt_use_amt": str,  # 담보대출금
+                            "crd_loan": str,  # 신용융자금
+                            "ls_grnt": str,  # 대주담보금
+                            "repl_amt": str,  # 대용금
+                            "prsm_dpst_aset_amt": str,  # 추정예탁자산
+                            "prsm_dpst_aset_amt_bncr_skip": str,  # 추정예탁자산수익증권제외
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.daily_estimated_deposit_asset_status_request_kt00002(
+            ...     start_dt="20241111",
+            ...     end_dt="20241125"
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00002",
+        }
+        data = {
+            "start_dt": start_dt,
+            "end_dt": end_dt,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

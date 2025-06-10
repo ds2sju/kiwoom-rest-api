@@ -75,6 +75,21 @@ try:
         order_no="8"
     ), print_result=False)
     
+    print_result("ka10170_result", account.today_trading_journal_request_ka10170(
+        ottks_tp="1",
+        ch_crd_tp="0",
+        base_dt="20241128"
+    ), print_result=False)
+    
+    print_result("kt00001_result", account.deposit_detail_status_request_kt00001(
+        qry_tp="1"
+    ), print_result=False)
+    
+    print_result("kt00002_result", account.daily_estimated_deposit_asset_status_request_kt00002(
+        start_dt="20241128",
+        end_dt="20241128"
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
