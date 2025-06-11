@@ -90,6 +90,10 @@ try:
         end_dt="20241128"
     ), print_result=False)
     
+    print_result("kt00003_result", account.estimated_asset_inquiry_request_kt00003(
+        qry_tp="0"  # 전체 조회
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 

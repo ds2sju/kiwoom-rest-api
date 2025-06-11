@@ -858,3 +858,48 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def estimated_asset_inquiry_request_kt00003(
+        self,
+        qry_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        추정자산조회요청 (kt00003)
+
+        Args:
+            qry_tp (str): 상장폐지조회구분 (0:전체, 1:상장폐지종목제외)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 추정자산 데이터
+                {
+                    "prsm_dpst_aset_amt": str,  # 추정예탁자산
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.estimated_asset_inquiry_request_kt00003(
+            ...     qry_tp="0"  # 전체 조회
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00003",
+        }
+        data = {
+            "qry_tp": qry_tp,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
