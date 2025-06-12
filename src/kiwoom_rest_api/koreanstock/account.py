@@ -903,3 +903,89 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def account_evaluation_status_request_kt00004(
+        self,
+        qry_tp: str,
+        dmst_stex_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        계좌평가현황요청 (kt00004)
+
+        Args:
+            qry_tp (str): 상장폐지조회구분 (0:전체, 1:상장폐지종목제외)
+            dmst_stex_tp (str): 국내거래소구분 (KRX:한국거래소, NXT:넥스트트레이드)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 계좌평가현황 데이터
+                {
+                    "acnt_nm": str,  # 계좌명
+                    "brch_nm": str,  # 지점명
+                    "entr": str,  # 예수금
+                    "d2_entra": str,  # D+2추정예수금
+                    "tot_est_amt": str,  # 유가잔고평가액
+                    "aset_evlt_amt": str,  # 예탁자산평가액
+                    "tot_pur_amt": str,  # 총매입금액
+                    "prsm_dpst_aset_amt": str,  # 추정예탁자산
+                    "tot_grnt_sella": str,  # 매도담보대출금
+                    "tdy_lspft_amt": str,  # 당일투자원금
+                    "invt_bsamt": str,  # 당월투자원금
+                    "lspft_amt": str,  # 누적투자원금
+                    "tdy_lspft": str,  # 당일투자손익
+                    "lspft2": str,  # 당월투자손익
+                    "lspft": str,  # 누적투자손익
+                    "tdy_lspft_rt": str,  # 당일손익율
+                    "lspft_ratio": str,  # 당월손익율
+                    "lspft_rt": str,  # 누적손익율
+                    "stk_acnt_evlt_prst": [  # 종목별계좌평가현황
+                        {
+                            "stk_cd": str,  # 종목코드
+                            "stk_nm": str,  # 종목명
+                            "rmnd_qty": str,  # 보유수량
+                            "avg_prc": str,  # 평균단가
+                            "cur_prc": str,  # 현재가
+                            "evlt_amt": str,  # 평가금액
+                            "pl_amt": str,  # 손익금액
+                            "pl_rt": str,  # 손익율
+                            "loan_dt": str,  # 대출일
+                            "pur_amt": str,  # 매입금액
+                            "setl_remn": str,  # 결제잔고
+                            "pred_buyq": str,  # 전일매수수량
+                            "pred_sellq": str,  # 전일매도수량
+                            "tdy_buyq": str,  # 금일매수수량
+                            "tdy_sellq": str,  # 금일매도수량
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.account_evaluation_status_request_kt00004(
+            ...     qry_tp="0",  # 전체 조회
+            ...     dmst_stex_tp="KRX"  # 한국거래소
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00004",
+        }
+        data = {
+            "qry_tp": qry_tp,
+            "dmst_stex_tp": dmst_stex_tp,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

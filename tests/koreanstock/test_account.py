@@ -94,6 +94,11 @@ try:
         qry_tp="0"  # 전체 조회
     ), print_result=False)
     
+    print_result("kt00004_result", account.account_evaluation_status_request_kt00004(
+        qry_tp="0",  # 전체 조회
+        dmst_stex_tp="KRX"  # 한국거래소
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
