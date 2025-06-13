@@ -989,3 +989,95 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def filled_position_request_kt00005(
+        self,
+        dmst_stex_tp: str,
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        체결잔고요청 (kt00005)
+
+        Args:
+            dmst_stex_tp (str): 국내거래소구분 (KRX:한국거래소, NXT:넥스트트레이드)
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 체결잔고 데이터
+                {
+                    "entr": str,  # 예수금
+                    "entr_d1": str,  # 예수금D+1
+                    "entr_d2": str,  # 예수금D+2
+                    "pymn_alow_amt": str,  # 출금가능금액
+                    "uncl_stk_amt": str,  # 미수확보금
+                    "repl_amt": str,  # 대용금
+                    "rght_repl_amt": str,  # 권리대용금
+                    "ord_alowa": str,  # 주문가능현금
+                    "ch_uncla": str,  # 현금미수금
+                    "crd_int_npay_gold": str,  # 신용이자미납금
+                    "etc_loana": str,  # 기타대여금
+                    "nrpy_loan": str,  # 미상환융자금
+                    "profa_ch": str,  # 증거금현금
+                    "repl_profa": str,  # 증거금대용
+                    "stk_buy_tot_amt": str,  # 주식매수총액
+                    "evlt_amt_tot": str,  # 평가금액합계
+                    "tot_pl_tot": str,  # 총손익합계
+                    "tot_pl_rt": str,  # 총손익률
+                    "tot_re_buy_alowa": str,  # 총재매수가능금액
+                    "20ord_alow_amt": str,  # 20%주문가능금액
+                    "30ord_alow_amt": str,  # 30%주문가능금액
+                    "40ord_alow_amt": str,  # 40%주문가능금액
+                    "50ord_alow_amt": str,  # 50%주문가능금액
+                    "60ord_alow_amt": str,  # 60%주문가능금액
+                    "100ord_alow_amt": str,  # 100%주문가능금액
+                    "crd_loan_tot": str,  # 신용융자합계
+                    "crd_loan_ls_tot": str,  # 신용융자대주합계
+                    "crd_grnt_rt": str,  # 신용담보비율
+                    "dpst_grnt_use_amt_amt": str,  # 예탁담보대출금액
+                    "grnt_loan_amt": str,  # 매도담보대출금액
+                    "stk_cntr_remn": [  # 종목별체결잔고
+                        {
+                            "crd_tp": str,  # 신용구분
+                            "loan_dt": str,  # 대출일
+                            "expr_dt": str,  # 만기일
+                            "stk_cd": str,  # 종목번호
+                            "stk_nm": str,  # 종목명
+                            "setl_remn": str,  # 결제잔고
+                            "cur_qty": str,  # 현재잔고
+                            "cur_prc": str,  # 현재가
+                            "buy_uv": str,  # 매입단가
+                            "pur_amt": str,  # 매입금액
+                            "evlt_amt": str,  # 평가금액
+                            "evltv_prft": str,  # 평가손익
+                            "pl_rt": str,  # 손익률
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.filled_position_request_kt00005(
+            ...     dmst_stex_tp="KRX"  # 한국거래소
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00005",
+        }
+        data = {
+            "dmst_stex_tp": dmst_stex_tp,
+        }
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

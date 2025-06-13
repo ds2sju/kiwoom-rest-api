@@ -99,6 +99,10 @@ try:
         dmst_stex_tp="KRX"  # 한국거래소
     ), print_result=False)
     
+    print_result("kt00005_result", account.filled_position_request_kt00005(
+        dmst_stex_tp="KRX"  # 한국거래소
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
