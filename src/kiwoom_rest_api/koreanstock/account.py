@@ -1081,3 +1081,100 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def account_order_execution_detail_request_kt00007(
+        self,
+        qry_tp: str,
+        stk_bond_tp: str,
+        sell_tp: str,
+        dmst_stex_tp: str,
+        ord_dt: str = "",
+        stock_code: str = "",
+        fr_ord_no: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        계좌별주문체결내역상세요청 (kt00007)
+
+        Args:
+            qry_tp (str): 조회구분 (1:주문순, 2:역순, 3:미체결, 4:체결내역만)
+            stk_bond_tp (str): 주식채권구분 (0:전체, 1:주식, 2:채권)
+            sell_tp (str): 매도수구분 (0:전체, 1:매도, 2:매수)
+            dmst_stex_tp (str): 국내거래소구분 (%:전체, KRX:한국거래소, NXT:넥스트트레이드, SOR:최선주문집행)
+            ord_dt (str, optional): 주문일자 (YYYYMMDD). Defaults to "".
+            stock_code (str, optional): 종목코드 (12자리). 공백일때 전체종목. Defaults to "".
+            fr_ord_no (str, optional): 시작주문번호 (7자리). 공백일때 전체주문. Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 계좌별주문체결내역상세 데이터
+                {
+                    "acnt_ord_cntr_prps_dtl": [  # 계좌별주문체결내역상세
+                        {
+                            "ord_no": str,  # 주문번호
+                            "stk_cd": str,  # 종목번호
+                            "trde_tp": str,  # 매매구분
+                            "crd_tp": str,  # 신용구분
+                            "ord_qty": str,  # 주문수량
+                            "ord_uv": str,  # 주문단가
+                            "cnfm_qty": str,  # 확인수량
+                            "acpt_tp": str,  # 접수구분
+                            "rsrv_tp": str,  # 반대여부
+                            "ord_tm": str,  # 주문시간
+                            "ori_ord": str,  # 원주문
+                            "stk_nm": str,  # 종목명
+                            "io_tp_nm": str,  # 주문구분
+                            "loan_dt": str,  # 대출일
+                            "cntr_qty": str,  # 체결수량
+                            "cntr_uv": str,  # 체결단가
+                            "ord_remnq": str,  # 주문잔량
+                            "comm_ord_tp": str,  # 통신구분
+                            "mdfy_cncl": str,  # 정정취소
+                            "cnfm_tm": str,  # 확인시간
+                            "dmst_stex_tp": str,  # 국내거래소구분
+                            "cond_uv": str,  # 스톱가
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.account_order_execution_detail_request_kt00007(
+            ...     qry_tp="1",  # 주문순
+            ...     stk_bond_tp="0",  # 전체
+            ...     sell_tp="0",  # 전체
+            ...     dmst_stex_tp="%",  # 전체
+            ...     stock_code="005930"  # 삼성전자
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00007",
+        }
+        data = {
+            "qry_tp": qry_tp,
+            "stk_bond_tp": stk_bond_tp,
+            "sell_tp": sell_tp,
+            "dmst_stex_tp": dmst_stex_tp,
+        }
+        
+        if ord_dt:
+            data["ord_dt"] = ord_dt
+        if stock_code:
+            data["stk_cd"] = stock_code
+        if fr_ord_no:
+            data["fr_ord_no"] = fr_ord_no
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

@@ -103,6 +103,14 @@ try:
         dmst_stex_tp="KRX"  # 한국거래소
     ), print_result=False)
     
+    print_result("kt00007_result", account.account_order_execution_detail_request_kt00007(
+        qry_tp="1",  # 주문순
+        stk_bond_tp="0",  # 전체
+        sell_tp="0",  # 전체
+        dmst_stex_tp="%",  # 전체
+        stock_code=""  # 전체
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
