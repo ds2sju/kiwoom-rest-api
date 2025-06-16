@@ -1,3 +1,4 @@
+# OAuth 토큰을 발급하고 갱신하는 로직을 담당합니다.
 from datetime import datetime, timedelta
 from typing import Dict, Optional, Any
 import time

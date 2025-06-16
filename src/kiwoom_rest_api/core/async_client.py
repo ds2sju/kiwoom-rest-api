@@ -1,3 +1,4 @@
+# 비동기 HTTP 요청을 처리하는 클라이언트 구현입니다.
 from typing import Any, Dict, Optional
 
 import httpx

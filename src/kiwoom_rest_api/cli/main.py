@@ -1,8 +1,9 @@
+# 명령행 인터페이스(CLI)를 제공하여 손쉽게 API를 호출할 수 있습니다.
 import os
 import typer
 import json
-from rich import print as rprint # print_json 대신 사용할 수 있음
-from rich.pretty import pprint # 객체 예쁘게 출력
+from rich import print as rprint  # print_json 대신 사용할 수 있음
+from rich.pretty import pprint  # 객체 예쁘게 출력
 
 # 필요한 클래스 임포트
 from kiwoom_rest_api.koreanstock.stockinfo import StockInfo

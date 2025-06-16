@@ -1,3 +1,4 @@
+# 업종(섹터) 관련 정보를 다루는 API 기능 클래스입니다.
 from kiwoom_rest_api.core.base_api import KiwoomBaseAPI
 from typing import Union, Dict, Any, Awaitable
 

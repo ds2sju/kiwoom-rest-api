@@ -1,3 +1,4 @@
+# 계좌 관련 조회 API 기능을 묶어 놓은 클래스 모듈입니다.
 from kiwoom_rest_api.core.base_api import KiwoomBaseAPI
 from typing import Union, Dict, Any, Awaitable
 

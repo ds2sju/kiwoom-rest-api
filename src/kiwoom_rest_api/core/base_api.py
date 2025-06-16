@@ -1,3 +1,5 @@
+# 개별 API 클래스의 공통 베이스 클래스를 정의합니다.
+# 동기/비동기 클라이언트를 받아 실제 요청을 수행합니다.
 from typing import Optional
 from kiwoom_rest_api.core.sync_client import make_request
 from kiwoom_rest_api.core.async_client import make_request_async

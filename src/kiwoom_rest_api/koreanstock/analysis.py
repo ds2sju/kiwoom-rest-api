@@ -1,3 +1,4 @@
+# 시장 분석 관련 간단한 조회 함수를 모아 둔 모듈입니다.
 from typing import Dict, Optional, Any
 
 from kiwoom_rest_api.core.sync_client import make_request

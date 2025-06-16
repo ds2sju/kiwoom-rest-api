@@ -1,3 +1,4 @@
+# 동기 방식으로 HTTP 요청을 수행하는 클라이언트 모듈입니다.
 from typing import Any, Dict, Optional
 
 import httpx

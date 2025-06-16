@@ -1,3 +1,4 @@
+# 다양한 주식 정보 조회 API를 메서드 형태로 제공하는 클래스입니다.
 from typing import Dict, Optional, Any, List, Union, Callable, Awaitable
 
 from kiwoom_rest_api.core.sync_client import make_request

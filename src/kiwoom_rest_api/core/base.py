@@ -1,8 +1,9 @@
+# HTTP 요청 생성과 응답 처리의 공통 기능을 담당합니다.
 from typing import Any, Dict, Optional, Union
 import json
 from urllib.parse import urljoin
 import httpx
-import inspect # Import inspect
+import inspect  # 디버깅용 inspect 모듈
 
 from kiwoom_rest_api.config import get_base_url, get_headers, DEFAULT_TIMEOUT
 

@@ -1,3 +1,5 @@
+# 환경 변수와 기본 설정 값을 관리하는 모듈입니다.
+# API 호출 시 필요한 기본 URL과 인증 정보를 이곳에서 가져옵니다.
 import os
 from typing import Optional
 
