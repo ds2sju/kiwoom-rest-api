@@ -1178,3 +1178,173 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def next_day_settlement_schedule_request_kt00008(
+        self,
+        strt_dcd_seq: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        계좌별익일결제예정내역요청 (kt00008)
+
+        Args:
+            strt_dcd_seq (str, optional): 시작결제번호 (7자리). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 계좌별익일결제예정내역 데이터
+                {
+                    "trde_dt": str,  # 매매일자
+                    "setl_dt": str,  # 결제일자
+                    "sell_amt_sum": str,  # 매도정산합
+                    "buy_amt_sum": str,  # 매수정산합
+                    "acnt_nxdy_setl_frcs_prps_array": [  # 계좌별익일결제예정내역배열
+                        {
+                            "seq": str,  # 일련번호
+                            "stk_cd": str,  # 종목번호
+                            "loan_dt": str,  # 대출일
+                            "qty": str,  # 수량
+                            "engg_amt": str,  # 약정금액
+                            "cmsn": str,  # 수수료
+                            "incm_tax": str,  # 소득세
+                            "rstx": str,  # 농특세
+                            "stk_nm": str,  # 종목명
+                            "sell_tp": str,  # 매도수구분
+                            "unp": str,  # 단가
+                            "exct_amt": str,  # 정산금액
+                            "trde_tax": str,  # 거래세
+                            "resi_tax": str,  # 주민세
+                            "crd_tp": str,  # 신용구분
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.next_day_settlement_schedule_request_kt00008()
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00008",
+        }
+        data = {}
+        
+        if strt_dcd_seq:
+            data["strt_dcd_seq"] = strt_dcd_seq
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def account_order_execution_status_request_kt00009(
+        self,
+        stk_bond_tp: str,
+        mrkt_tp: str,
+        sell_tp: str,
+        qry_tp: str,
+        dmst_stex_tp: str,
+        ord_dt: str = "",
+        stock_code: str = "",
+        fr_ord_no: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        계좌별주문체결현황요청 (kt00009)
+
+        Args:
+            stk_bond_tp (str): 주식채권구분 (0:전체, 1:주식, 2:채권)
+            mrkt_tp (str): 시장구분 (0:전체, 1:코스피, 2:코스닥, 3:OTCBB, 4:ECN)
+            sell_tp (str): 매도수구분 (0:전체, 1:매도, 2:매수)
+            qry_tp (str): 조회구분 (0:전체, 1:체결)
+            dmst_stex_tp (str): 국내거래소구분 (%:전체, KRX:한국거래소, NXT:넥스트트레이드, SOR:최선주문집행)
+            ord_dt (str, optional): 주문일자 (YYYYMMDD). Defaults to "".
+            stock_code (str, optional): 종목코드 (12자리). Defaults to "".
+            fr_ord_no (str, optional): 시작주문번호 (7자리). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 계좌별주문체결현황 데이터
+                {
+                    "sell_grntl_engg_amt": str,  # 매도약정금액
+                    "buy_engg_amt": str,  # 매수약정금액
+                    "engg_amt": str,  # 약정금액
+                    "acnt_ord_cntr_prst_array": [  # 계좌별주문체결현황배열
+                        {
+                            "stk_bond_tp": str,  # 주식채권구분
+                            "ord_no": str,  # 주문번호
+                            "stk_cd": str,  # 종목번호
+                            "trde_tp": str,  # 매매구분
+                            "io_tp_nm": str,  # 주문유형구분
+                            "ord_qty": str,  # 주문수량
+                            "ord_uv": str,  # 주문단가
+                            "cnfm_qty": str,  # 확인수량
+                            "rsrv_oppo": str,  # 예약/반대
+                            "cntr_no": str,  # 체결번호
+                            "acpt_tp": str,  # 접수구분
+                            "orig_ord_no": str,  # 원주문번호
+                            "stk_nm": str,  # 종목명
+                            "setl_tp": str,  # 결제구분
+                            "crd_deal_tp": str,  # 신용거래구분
+                            "cntr_qty": str,  # 체결수량
+                            "cntr_uv": str,  # 체결단가
+                            "comm_ord_tp": str,  # 통신구분
+                            "mdfy_cncl_tp": str,  # 정정/취소구분
+                            "cntr_tm": str,  # 체결시간
+                            "dmst_stex_tp": str,  # 국내거래소구분
+                            "cond_uv": str,  # 스톱가
+                        },
+                        ...
+                    ],
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.account_order_execution_status_request_kt00009(
+            ...     stk_bond_tp="0",  # 전체
+            ...     mrkt_tp="0",  # 전체
+            ...     sell_tp="0",  # 전체
+            ...     qry_tp="0",  # 전체
+            ...     dmst_stex_tp="KRX"  # 한국거래소
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00009",
+        }
+        data = {
+            "stk_bond_tp": stk_bond_tp,
+            "mrkt_tp": mrkt_tp,
+            "sell_tp": sell_tp,
+            "qry_tp": qry_tp,
+            "dmst_stex_tp": dmst_stex_tp,
+        }
+        
+        if ord_dt:
+            data["ord_dt"] = ord_dt
+        if stock_code:
+            data["stk_cd"] = stock_code
+        if fr_ord_no:
+            data["fr_ord_no"] = fr_ord_no
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

@@ -111,6 +111,18 @@ try:
         stock_code=""  # 전체
     ), print_result=False)
     
+    print_result("kt00008_result", account.next_day_settlement_schedule_request_kt00008(
+        strt_dcd_seq=""  # 전체
+    ), print_result=False)
+    
+    print_result("kt00009_result", account.account_order_execution_status_request_kt00009(
+        stk_bond_tp="0",  # 전체
+        mrkt_tp="0",  # 전체
+        sell_tp="0",  # 전체
+        qry_tp="0",  # 전체
+        dmst_stex_tp="KRX"  # 한국거래소
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
