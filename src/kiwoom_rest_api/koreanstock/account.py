@@ -1348,3 +1348,181 @@ class Account(KiwoomBaseAPI):
             json=data,
             headers=headers,
         )
+        
+    def withdrawable_order_amount_request_kt00010(
+        self,
+        stock_code: str,
+        trde_tp: str,
+        uv: str,
+        io_amt: str = "",
+        trde_qty: str = "",
+        exp_buy_unp: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        주문인출가능금액요청 (kt00010)
+
+        Args:
+            stock_code (str): 종목번호 (12자리)
+            trde_tp (str): 매매구분 (1:매도, 2:매수)
+            uv (str): 매수가격 (10자리)
+            io_amt (str, optional): 입출금액 (12자리). Defaults to "".
+            trde_qty (str, optional): 매매수량 (10자리). Defaults to "".
+            exp_buy_unp (str, optional): 예상매수단가 (10자리). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 주문인출가능금액 데이터
+                {
+                    "profa_20ord_alow_amt": str,  # 증거금20%주문가능금액
+                    "profa_20ord_alowq": str,  # 증거금20%주문가능수량
+                    "profa_30ord_alow_amt": str,  # 증거금30%주문가능금액
+                    "profa_30ord_alowq": str,  # 증거금30%주문가능수량
+                    "profa_40ord_alow_amt": str,  # 증거금40%주문가능금액
+                    "profa_40ord_alowq": str,  # 증거금40%주문가능수량
+                    "profa_50ord_alow_amt": str,  # 증거금50%주문가능금액
+                    "profa_50ord_alowq": str,  # 증거금50%주문가능수량
+                    "profa_60ord_alow_amt": str,  # 증거금60%주문가능금액
+                    "profa_60ord_alowq": str,  # 증거금60%주문가능수량
+                    "profa_rdex_60ord_alow_amt": str,  # 증거금감면60%주문가능금
+                    "profa_rdex_60ord_alowq": str,  # 증거금감면60%주문가능수
+                    "profa_100ord_alow_amt": str,  # 증거금100%주문가능금액
+                    "profa_100ord_alowq": str,  # 증거금100%주문가능수량
+                    "pred_reu_alowa": str,  # 전일재사용가능금액
+                    "tdy_reu_alowa": str,  # 금일재사용가능금액
+                    "entr": str,  # 예수금
+                    "repl_amt": str,  # 대용금
+                    "uncla": str,  # 미수금
+                    "ord_pos_repl": str,  # 주문가능대용
+                    "ord_alowa": str,  # 주문가능현금
+                    "wthd_alowa": str,  # 인출가능금액
+                    "nxdy_wthd_alowa": str,  # 익일인출가능금액
+                    "pur_amt": str,  # 매입금액
+                    "cmsn": str,  # 수수료
+                    "pur_exct_amt": str,  # 매입정산금
+                    "d2entra": str,  # D2추정예수금
+                    "profa_rdex_aplc_tp": str,  # 증거금감면적용구분 (0:일반,1:60%감면)
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.withdrawable_order_amount_request_kt00010(
+            ...     stock_code="005930",  # 삼성전자
+            ...     trde_tp="2",  # 매수
+            ...     uv="267000"  # 매수가격
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00010",
+        }
+        data = {
+            "stk_cd": stock_code,
+            "trde_tp": trde_tp,
+            "uv": uv,
+        }
+        
+        if io_amt:
+            data["io_amt"] = io_amt
+        if trde_qty:
+            data["trde_qty"] = trde_qty
+        if exp_buy_unp:
+            data["exp_buy_unp"] = exp_buy_unp
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )
+        
+    def orderable_quantity_by_margin_ratio_request_kt00011(
+        self,
+        stock_code: str,
+        uv: str = "",
+        cont_yn: str = "N",
+        next_key: str = ""
+    ) -> dict:
+        """
+        증거금율별주문가능수량조회요청 (kt00011)
+
+        Args:
+            stock_code (str): 종목번호 (12자리)
+            uv (str, optional): 매수가격 (10자리). Defaults to "".
+            cont_yn (str, optional): 연속조회여부. Defaults to "N".
+            next_key (str, optional): 연속조회키. Defaults to "".
+
+        Returns:
+            dict: 증거금율별주문가능수량 데이터
+                {
+                    "stk_profa_rt": str,  # 종목증거금율
+                    "profa_rt": str,  # 계좌증거금율
+                    "aplc_rt": str,  # 적용증거금율
+                    "profa_20ord_alow_amt": str,  # 증거금20%주문가능금액
+                    "profa_20ord_alowq": str,  # 증거금20%주문가능수량
+                    "profa_20pred_reu_amt": str,  # 증거금20%전일재사용금액
+                    "profa_20tdy_reu_amt": str,  # 증거금20%금일재사용금액
+                    "profa_30ord_alow_amt": str,  # 증거금30%주문가능금액
+                    "profa_30ord_alowq": str,  # 증거금30%주문가능수량
+                    "profa_30pred_reu_amt": str,  # 증거금30%전일재사용금액
+                    "profa_30tdy_reu_amt": str,  # 증거금30%금일재사용금액
+                    "profa_40ord_alow_amt": str,  # 증거금40%주문가능금액
+                    "profa_40ord_alowq": str,  # 증거금40%주문가능수량
+                    "profa_40pred_reu_amt": str,  # 증거금40%전일재사용금액
+                    "profa_40tdy_reu_amt": str,  # 증거금40%금일재사용금액
+                    "profa_50ord_alow_amt": str,  # 증거금50%주문가능금액
+                    "profa_50ord_alowq": str,  # 증거금50%주문가능수량
+                    "profa_50pred_reu_amt": str,  # 증거금50%전일재사용금액
+                    "profa_50tdy_reu_amt": str,  # 증거금50%금일재사용금액
+                    "profa_60ord_alow_amt": str,  # 증거금60%주문가능금액
+                    "profa_60ord_alowq": str,  # 증거금60%주문가능수량
+                    "profa_60pred_reu_amt": str,  # 증거금60%전일재사용금액
+                    "profa_60tdy_reu_amt": str,  # 증거금60%금일재사용금액
+                    "profa_100ord_alow_amt": str,  # 증거금100%주문가능금액
+                    "profa_100ord_alowq": str,  # 증거금100%주문가능수량
+                    "profa_100pred_reu_amt": str,  # 증거금100%전일재사용금액
+                    "profa_100tdy_reu_amt": str,  # 증거금100%금일재사용금액
+                    "min_ord_alow_amt": str,  # 미수불가주문가능금액
+                    "min_ord_alowq": str,  # 미수불가주문가능수량
+                    "min_pred_reu_amt": str,  # 미수불가전일재사용금액
+                    "min_tdy_reu_amt": str,  # 미수불가금일재사용금액
+                    "entr": str,  # 예수금
+                    "repl_amt": str,  # 대용금
+                    "uncla": str,  # 미수금
+                    "ord_pos_repl": str,  # 주문가능대용
+                    "ord_alowa": str,  # 주문가능현금
+                    "return_code": int,  # 응답코드
+                    "return_msg": str,  # 응답메시지
+                }
+
+        Example:
+            >>> from kiwoom_rest_api import KiwoomRestAPI
+            >>> api = KiwoomRestAPI()
+            >>> result = api.account.orderable_quantity_by_margin_ratio_request_kt00011(
+            ...     stock_code="005930"  # 삼성전자
+            ... )
+            >>> print(result)
+        """
+        headers = {
+            "cont-yn": cont_yn,
+            "next-key": next_key,
+            "api-id": "kt00011",
+        }
+        data = {
+            "stk_cd": stock_code,
+        }
+        
+        if uv:
+            data["uv"] = uv
+            
+        return self._execute_request(
+            "POST",
+            json=data,
+            headers=headers,
+        )

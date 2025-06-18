@@ -123,6 +123,16 @@ try:
         dmst_stex_tp="KRX"  # 한국거래소
     ), print_result=False)
     
+    print_result("kt00010_result", account.withdrawable_order_amount_request_kt00010(
+        stock_code="005930",  # 삼성전자
+        trde_tp="2",  # 매수
+        uv="267000"  # 매수가격
+    ), print_result=False)
+    
+    print_result("kt00011_result", account.orderable_quantity_by_margin_ratio_request_kt00011(
+        stock_code="005930"  # 삼성전자
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
