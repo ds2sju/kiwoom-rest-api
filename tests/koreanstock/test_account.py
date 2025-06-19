@@ -133,6 +133,30 @@ try:
         stock_code="005930"  # 삼성전자
     ), print_result=False)
     
+    print_result("kt00012_result", account.orderable_quantity_by_credit_guarantee_ratio_request_kt00012(
+        stock_code="005930"  # 삼성전자
+    ), print_result=False)
+    
+    print_result("kt00013_result", account.margin_detail_inquiry_request_kt00013(), print_result=False)
+    
+    print_result("kt00015_result", account.comprehensive_transaction_history_request_kt00015(
+        start_date="20241121",
+        end_date="20241125",
+        transaction_type="0"  # 전체
+    ), print_result=False)
+    
+    print_result("kt00016_result", account.daily_account_return_detail_status_request_kt00016(
+        from_date="20241111",
+        to_date="20241125"
+    ), print_result=False)
+    
+    print_result("kt00017_result", account.today_account_status_by_account_request_kt00017(), print_result=False)
+    
+    print_result("kt00018_result", account.account_evaluation_balance_detail_request_kt00018(
+        query_type="1",  # 합산
+        domestic_exchange_type="KRX"  # 한국거래소
+    ), print_result=False)
+    
 except Exception as e:
     print("에러 발생:", str(e))
 
