@@ -42,8 +42,10 @@ class KiwoomBaseAPI:
             headers["Authorization"] = f"Bearer {access_token}"
         return await make_request_async(endpoint=url, method=method, headers=headers, **kwargs)
 
-    def _execute_request(self, method: str, **kwargs):
-        url = f"{self.base_url}{self.resource_url}" if self.base_url else f"/{self.resource_url}"
+    def _execute_request(self, method: str, resource_url: str = None, **kwargs):
+        # resource_url이 제공되면 임시로 사용, 아니면 기본값 사용
+        url_resource = resource_url if resource_url is not None else self.resource_url
+        url = f"{self.base_url}{url_resource}" if self.base_url else f"/{url_resource}"
         if self.use_async:
             return self._make_request_async(method, url, **kwargs)
         return self._make_request(method, url, **kwargs)

@@ -1648,4 +1648,9 @@ class StockInfo(KiwoomBaseAPI):
             "dt": date,
             "mrkt_tp": market_type
         }
-        return self._execute_request("POST", json=data, headers=headers)
+        return self._execute_request(
+            "POST",
+            resource_url="/api/dostk/slb",
+            json=data,
+            headers=headers
+        )

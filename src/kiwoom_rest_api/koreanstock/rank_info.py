@@ -2151,9 +2151,10 @@ class RankInfo(KiwoomBaseAPI):
         # Optional parameter
         if end_dt:
             data["end_dt"] = end_dt
-
+            
         return self._execute_request(
             "POST",
+            resource_url="/api/dostk/slb",
             json=data,
             headers=headers,
         )
